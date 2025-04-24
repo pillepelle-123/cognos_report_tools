@@ -10,6 +10,15 @@ $report = $this->request->getSession()->read('QueryExpander.report');
 
 <div class="query-expander result">
     <h2>Ergebnis</h2>
+    <div>  
+        <?= $this->Form->create(null, [
+            'url' => ['controller' => 'Crtapps', 'action' => 'downloadModifiedXml']
+        ]) ?>
+        <?= $this->Form->button('XML herunterladen', [
+            'class' => 'btn btn-success'
+        ]) ?>
+        <?= $this->Form->end() ?>
+    </div>
     
     <div class="card mb-4">
         <div class="card-header">Modifizierte XML</div>
@@ -17,14 +26,6 @@ $report = $this->request->getSession()->read('QueryExpander.report');
             <pre><?= h($modifiedXmlContent) ?></pre>
         </div>
     </div>
-    
-    <?= $this->Form->create(null, [
-        'url' => ['controller' => 'Crtapps', 'action' => 'downloadModifiedXml']
-    ]) ?>
-    <?= $this->Form->button('XML herunterladen', [
-        'class' => 'btn btn-success'
-    ]) ?>
-    <?= $this->Form->end() ?>
     
     <?= $this->Html->link('Zurück', [
         'action' => 'queryExpander', $report['id']]
