@@ -14,6 +14,8 @@
  * @var \App\View\AppView $this
  */
 
+use Cake\Routing\Router;
+
 $cakeDescription = 'CakePHP: the rapid development php framework';
 ?>
 <!DOCTYPE html>
@@ -39,8 +41,15 @@ $cakeDescription = 'CakePHP: the rapid development php framework';
             <a href="<?= $this->Url->build('/') ?>"><span>Cake</span>PHP</a>
         </div>
         <div class="top-nav-links">
-            <a target="_blank" rel="noopener" href="https://book.cakephp.org/5/">Documentation</a>
-            <a target="_blank" rel="noopener" href="https://api.cakephp.org/">API</a>
+            <?php 
+                echo $this->request->getSession()->read('authenticated');
+                if ($this->Identity->isLoggedIn()) {
+                    $user = $this->request->getSession()->read('Auth.User');
+                    echo $this->Html->link('Logout', ['controller' => 'Users', 'action' => 'logout']);
+                } 
+            ?>
+            <?php echo $this->template ?> 
+
         </div>
     </nav>
     <main class="main">
