@@ -2,7 +2,7 @@
     <h2>Cognos Reports</h2>
     
     <div class="actions">
-        <?= $this->Html->link('Report hochladen', ['action' => 'upload'], ['class' => 'button']) ?>
+        <?= $this->Html->link('Report hochladen', ['action' => 'upload'], ['class' => 'button'], ['type' => 'button']) ?>
     </div>
     
     <table>
@@ -33,11 +33,23 @@
 						<?= $this->Html->link('In App bearbeiten', 
 							['action' => 'apps', $report->id],
 							['class' => 'btn btn-info btn-sm']) ?>
+
 						<!-- Löschen -->
-						<button onclick="initDelete(<?= $report->id ?>)" 
-									class="btn btn-danger btn-sm">
-							Löschen
-						</button>
+						<form id="deleteForm" method="post" action="<?= $this->Url->build(['action' => 'delete', $report->id]) ?>" onsubmit="return confirmDelete(<?= $report->id ?>);">
+							<span id="delete-wrapper-<?= $report->id ?>">
+							<button onclick="initDelete(<?= $report->id ?>)" 
+										class="btn btn-danger btn-sm">
+								Löschen
+							</button>
+								
+							</span>
+						</form>
+
+
+
+
+						</span>
+						</form>
 					 </td>
 				</tr>
 				<?php endforeach; ?>

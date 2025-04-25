@@ -3,7 +3,7 @@
     /* The following are official CakePHP colors */
     --color-cakephp-red: #d33c43;
     --color-cakephp-gray: #404041;
-    --color-cakephp-blue: #2f85ae;
+    --color-cakephp-blue: #1b273d;
     --color-cakephp-lightblue: #34bdd7;
 
     /* These are additional colors */
@@ -13,7 +13,7 @@
     --color-main-bg: #f5f7fa;
     --color-links: var(--color-cakephp-blue);
     --color-links-active: #2a6496;
-    --color-headings: #363637;
+    --color-headings: #1b273d;
 
     --color-message-success-bg: #e3fcec;
     --color-message-success-text: #1f9d55;
@@ -35,6 +35,11 @@
 .button, button, input[type='button'], input[type='reset'], input[type='submit'] {
     background-color: var(--color-cakephp-red);
     border-color: var(--color-cakephp-red);
+    padding: 0px 4px 0px 4px;
+}
+
+.button a {
+    padding: 0px 4px 0px 4px;
 }
 
 body {
@@ -70,7 +75,7 @@ a:active {
 .top-nav-links a,
 th a,
 .actions a {
-    color: var(--color-lightgray);
+    /*color: var(--color-white);*/
 }
 
 .side-nav a:hover,
@@ -104,9 +109,9 @@ th a,
     font-weight: bold;
     padding: 0 0.4rem;
 }
-.actions a:first-child {
+/*.actions a:first-child {
     padding-left: 0;
-}
+}*/
 th {
     white-space: nowrap;
 }

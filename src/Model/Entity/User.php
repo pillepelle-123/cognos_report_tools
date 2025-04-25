@@ -30,6 +30,8 @@ class User extends Entity
     protected array $_accessible = [
         'username' => true,
         'password' => true,
+        'firstname' => true, // Neues Feld
+        //'profile_photo' => true, // Neues Feld
         'created' => true,
         'modified' => true,
     ];

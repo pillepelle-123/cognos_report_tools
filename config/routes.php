@@ -46,6 +46,7 @@ return function (RouteBuilder $routes): void {
         )->setPass(['report_id']);*/
 
         //App-spezifische Routen
+        $builder->connect('/users/edit-profile', ['controller' => 'Users', 'action' => 'edit']);
 
 
         /*$builder->connect('/query-expander/:report_id', 

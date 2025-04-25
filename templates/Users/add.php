@@ -17,3 +17,4 @@
 <?= $this->Form->button(__('Submit')); ?>
 <?= $this->Form->end() ?>
 </div>
+<div><?= $this->Html->link('Zurück', ['controller' => 'Reports', 'action' => 'index']) ?></div>

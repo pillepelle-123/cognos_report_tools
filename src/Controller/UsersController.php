@@ -3,6 +3,12 @@ declare(strict_types=1);
 
 namespace App\Controller;
 
+use App\Controller\AppController;
+use Cake\Auth\DefaultPasswordHasher;
+// use Cake\Filesystem\File;
+// use LasseRafn\InitialAvatarGenerator\InitialAvatar;
+use Intervention\Image\ImageManager;
+
 /**
  * Users Controller
  *
@@ -75,15 +81,14 @@ class UsersController extends AppController
      * @return \Cake\Http\Response|null|void Redirects on successful edit, renders view otherwise.
      * @throws \Cake\Datasource\Exception\RecordNotFoundException When record not found.
      */
-    public function edit($id = null)
-    {
-        $user = $this->Users->get($id, contain: []);
+    public function edit()
+    {   $user = $this->Users->get($this->Authentication->getIdentity()->get('id'));
         if ($this->request->is(['patch', 'post', 'put'])) {
             $user = $this->Users->patchEntity($user, $this->request->getData());
             if ($this->Users->save($user)) {
                 $this->Flash->success(__('The user has been saved.'));
 
-                return $this->redirect(['action' => 'index']);
+                return $this->redirect(['action' => 'edit']);
             }
             $this->Flash->error(__('The user could not be saved. Please, try again.'));
         }
@@ -160,5 +165,64 @@ class UsersController extends AppController
     //     $this->Authentication->allowUnauthenticated(['login']);
     // }
 
+    // public function editProfile()
+    // {
+
+        
+    //     $user = $this->Users->get($this->Authentication->getIdentity()->get('id'));
+
+    //     if ($this->request->is(['post', 'put'])) {
+    //         $data = $this->request->getData();
+
+    //         // Passwort validieren
+    //         if (!empty($data['old_password']) && !empty($data['password'])) {
+    //             $hasher = new DefaultPasswordHasher();
+    //             if (!$hasher->check($data['old_password'], $user->password)) {
+    //                 $this->Flash->error('Das alte Passwort ist falsch.');
+    //                 return;
+    //             }
+    //             $user->password = $data['password'];
+    //         }
+
+    //         // Vorname ändern
+    //         if (!empty($data['firstname']) && !empty($data['firstname'])) {
+   
+    //             //$user->firstname = $data['firstname'];
+    //             $user->set('firstname', $data['firstname']);
+    //         }
+    //         // Profilfoto hochladen
+    //         // if (!empty($data['profile_photo']) && $data['profile_photo']->getError() === UPLOAD_ERR_OK) {
+    //         //     $file = $data['profile_photo'];
+    //         //     $targetPath = WWW_ROOT . 'img' . DS . 'profile_photos' . DS . $user->id . '.jpg';
+    
+    //         //     // Bild verarbeiten (300x300px, quadratisch zuschneiden)
+    //         //     $imageManager = new ImageManager(); // Erstelle eine Instanz von ImageManager
+    //         //     $image = $imageManager->make($file->getStream()->getMetadata('uri'))
+    //         //         ->fit(300, 300)
+    //         //         ->save($targetPath);
+    
+    //         //     $user->profile_photo = 'profile_photos/' . $user->id . '.jpg';
+    //         // }
+    //         // elseif (empty($user->profile_photo)) {
+    //         //     // Standard-Profilfoto generieren
+    //         //     $avatar = new InitialAvatar();
+    //         //     $avatarPath = WWW_ROOT . 'img' . DS . 'profile_photos' . DS . $user->id . '.jpg';
+    //         //     $avatar->name($data['firstname'] ?? 'User')
+    //         //         ->size(300)
+    //         //         ->save($avatarPath);
+
+    //         //     $user->profile_photo = 'profile_photos/' . $user->id . '.jpg';
+    //         // }
+
+    //         $user = $this->Users->patchEntity($user, $data);
+    //         if ($this->Users->save($user)) {
+    //             $this->Flash->success('Profil wurde erfolgreich aktualisiert.');
+    //             return $this->redirect(['action' => 'editProfile']);
+    //         }
+    //         $this->Flash->error('Profil konnte nicht aktualisiert werden. Bitte versuche es erneut.');
+    //     }
+
+    //     $this->set(compact('user'));
+    // }
 
 }
