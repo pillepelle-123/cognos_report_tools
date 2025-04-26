@@ -63,8 +63,8 @@ return function (RouteBuilder $routes): void {
      $routes->scope('/crtapps', function (RouteBuilder $builder): void {
        
         $builder->connect('/query-expander/*', ['controller' => 'Crtapps', 'action' => 'queryExpander']);
-        $builder->connect('/query-expander-data-items/*', ['controller' => 'Crtapps', 'action' => 'queryExpanderDataItems']);
-        $builder->connect('/query-expander-result/*', ['controller' => 'Crtapps', 'action' => 'queryExpanderResult']);
+        $builder->connect('/query-expander-data-items', ['controller' => 'Crtapps', 'action' => 'queryExpanderDataItems']);
+        $builder->connect('/query-expander-result', ['controller' => 'Crtapps', 'action' => 'queryExpanderResult']);
         $builder->connect('/query-expander-result', ['controller' => 'Crtapps', 'action' => 'downloadModifiedXml']);
 
 

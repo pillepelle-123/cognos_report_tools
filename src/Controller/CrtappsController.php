@@ -4,6 +4,7 @@ namespace App\Controller;
 use App\Controller\AppController;
 use Cake\ORM\TableRegistry;
 
+use function PHPUnit\Framework\isEmpty;
 
 class CrtappsController extends AppController
 {
@@ -21,17 +22,15 @@ class CrtappsController extends AppController
     
     public function queryExpander($report_id = null)
     {
-        $this->report = $this->Reports->get($report_id, [
+        $report = $this->Reports->get($report_id, [
             'contain' => []
         ]);
-        $report = $this->report;
-        $content = $this->report->report_xml;
+        $content = $report->report_xml;
 
         // Report Informationen in Session speichern, um sie in allen andern Funktionen hier zu benutzen
-        $this->request->getSession()->write([
-                'QueryExpander.report'=> $report]);
+        $this->request->getSession()->write(['QueryExpander.report'=> $report]);
 
-            try {
+        try {
             // Entfernen von xmlns-Attributen, um Namespace-Probleme zu vermeiden
             $content = preg_replace('/xmlns[^=]*="[^"]*"/i', '', $content);
 
@@ -57,9 +56,16 @@ class CrtappsController extends AppController
                 $found = $xml->xpath('//queries/query');
             }
             
+            $i = 0;
             foreach ($found as $query) {
-                $queries[(string)$query['name']] = $query->asXML();
+                $queries[$i] = [
+                    'name' => (string)$query['name'],
+                    'xml' => $query->asXML()
+                ];
+                $i++;
             }
+
+
             
             if (empty($queries)) {
                 die("Keine Queries in der XML-Datei gefunden. Ist dies eine gültige Cognos Report Definition?");
@@ -68,45 +74,62 @@ class CrtappsController extends AppController
             $this->set(compact('report', 'queries'));
 
         } catch (\Exception $e) {
-            $this->Flash->error('Fehler beim Parsen des Reports: ' . $e->getMessage());
+            $this->Flash->error('Fehler beim Parsen und Auslesen der Queries: ' . $e->getMessage());
             return $this->redirect(['controller' => 'Reports', 'action' => 'index']);
         }    
     }
 
-    public function queryExpanderDataItems($report_id = null)
+    public function queryExpanderDataItems()
     {
-         $report = $this->request->getSession()->read('QueryExpander.report');
+        $report = $this->request->getSession()->read('QueryExpander.report');
 
-        if ($this->request->is('post')) {
-            $data = $this->request->getData();
-            
-            // Ausgewählte Query ermitteln
-            $selectedQueryName = $data['selected_query'];
-            $selectedQueryXml = $data['queries'][$selectedQueryName]['xml'];
+        //if ($this->request->is('post')) {
 
-            if (empty($data['selected_query'])) {
-                $this->Flash->error('Bitte wähle eine Query aus.');
-                return $this->redirect(['action' => 'queryExpander']);
+            if (!$this->request->is('post')) {
+                $this->Flash->error('Ungültige Anfragemethode');
+                return $this->redirect($this->referer());
             }
 
-            $selectedQuery = array("name" => $selectedQueryName, "xml" => $selectedQueryXml);
+            $data = $this->request->getData();
+            
+            if (empty($data['selected_query']) || !isset($data['queries'][$data['selected_query']])) {
+                $this->Flash->error('Bitte wählen Sie eine Query aus');
+                return $this->redirect($this->referer());
+            }
+
+            // Ausgewählte Query ermitteln, Name und XML auslesen
+            $selectedIndex = $data['selected_query'];
+            $selectedQuery = $data['queries'][$selectedIndex];
+
+
+            if (!isset($selectedQuery['name']) || !isEmpty($selectedQuery['name']) || !isset($selectedQuery['xml']) || !isEmpty($selectedQuery['xml'])) {
+                $this->Flash->error('Ungültige Query-Daten');
+                return $this->redirect($this->referer());
+            }
+
+            $selectedQueryName = $selectedQuery['name'];
+            $selectedQueryXml = $selectedQuery['xml'];
+            
+
+            
+            //$selectedQuery = array("name" => $selectedQueryName, "xml" => $selectedQueryXml);
             
             // XML verarbeiten
             $xml = simplexml_load_string($selectedQueryXml);
             if ($xml === false) {
                 $this->Flash->error('Fehler beim Parsen der Query XML');
-                return $this->redirect(['action' => 'queryExpander']);
+                return $this->redirect($this->referer());
             }
             
             $dataItems = $this->extractDataItems($xml);
 
             $this->set(compact('report', 'selectedQuery', 'dataItems'));
 
-            return $this->render('query_expander_data_items');
-        }
+            return $this->render('query_expander_data_items' );
+        //}
         
-        $this->Flash->error('Ungültiger Zugriff');
-        return $this->redirect(['action' => 'queryExpander']);
+        //$this->Flash->error('Ungültiger Zugriff');
+        //return $this->redirect(['action' => 'queryExpander']);
     }
     
     function extractDataItems($xml) {
@@ -125,12 +148,12 @@ class CrtappsController extends AppController
         return $dataItems;
     }
 
-    public function queryExpanderResult($report_id = null) {
+    public function queryExpanderResult() {
         
         //$session = $this->request->getSession();
         //$dataItems = $session->read('QueryExpander.dataItems');
         $report = $this->request->getSession()->read('QueryExpander.report');
-
+        $xml = $report->report_xml;
         // Daten aus dem Formular
         $data = $this->request->getData();
  

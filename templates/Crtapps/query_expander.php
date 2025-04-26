@@ -5,41 +5,35 @@
     <h2>Query Expander für: <?= h($report->report_name) ?></h2>
     
     <?= $this->Form->create(null, [
-        'url' => ['controller' => 'Crtapps', 'action' => 'queryExpanderDataItems', $report->id],
+        'url' => ['controller' => 'Crtapps', 'action' => 'queryExpanderDataItems'],
         'type' => 'post'
     ]) ?>
     
-    <table class="table">
-        <thead>
-            <tr>
-                <th>Auswahl</th>
-                <th>Query Name</th>
-            </tr>
-        </thead>
-        <tbody>
-            <?php foreach ($queries as $name => $xml): ?>
-            <tr>
-                <td>
-                    <?= $this->Form->radio('selected_query', [
-                        $name => ''
-                    ]) ?>
-                </td>
-                <td><?= h($name) ?>
-                <?= $this->Form->hidden("queries[{$name}][xml]", [
-                        'value' => $xml
-                    ]); 
-                    // $this->Form->hidden("report", [
-                    //     $report->id => $report->report_name
-                    // ]) 
-                ?>
-
-            
-                </td>
-            </tr>
-            <?php endforeach; ?>
-        </tbody>
-    </table>
+    <fieldset>
+    <legend>Query auswählen</legend>
+    <?php foreach ($queries as $index => $query): ?>
+        <div class="form-check">
+            <?= $this->Form->radio('selected_query', [
+                $index => $query['name'] // Nur der Name wird angezeigt
+            ], [
+                'label' => false,
+                'hiddenField' => false,
+                'required' => true
+            ]) ?>
+            <label class="form-check-label">
+                <?= h($query['name']) ?>
+            </label>
+            <?= $this->Form->hidden("queries.$index.xml", ['value' => $query['xml']]) ?>
+            <?= $this->Form->hidden("queries.$index.name", ['value' => $query['name']]) ?>
+        </div>
+    <?php endforeach; ?>
+</fieldset>
     
     <?= $this->Form->button('Weiter', ['class' => 'btn btn-primary']) ?>
     <?= $this->Form->end() ?>
+
+    <?= $this->Html->link('Zurück', [
+        'controller' => 'Reports',
+        'action' => 'apps']
+    , ['class' => 'btn btn-secondary mt-3']) ?>
 </div>

@@ -28,6 +28,6 @@ $report = $this->request->getSession()->read('QueryExpander.report');
     </div>
     
     <?= $this->Html->link('Zurück', [
-        'action' => 'queryExpander', $report['id']]
+        'action' => 'queryExpander_data_items']
     , ['class' => 'btn btn-secondary mt-3']) ?>
 </div>

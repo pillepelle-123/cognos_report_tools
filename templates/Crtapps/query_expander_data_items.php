@@ -11,7 +11,7 @@ $report = $this->request->getSession()->read('QueryExpander.report');
     <h2>Data Items für Query: <?= h($selectedQuery['name']) ?> in Report <?= h($report['name'])?></h2>
     
     <?= $this->Form->create(null, [
-        'url' => ['action' => 'queryExpanderResult', $report['id']]
+        'url' => ['action' => 'queryExpanderResult']
     ]) ?>
     
     <table class="table">
@@ -52,4 +52,8 @@ $report = $this->request->getSession()->read('QueryExpander.report');
     
     <?= $this->Form->button('Weiter', ['class' => 'btn btn-primary mt-3']) ?>
     <?= $this->Form->end() ?>
+
+    <?= $this->Html->link('Zurück', [
+        'action' => 'queryExpander']
+    , ['class' => 'btn btn-secondary mt-3']) ?>
 </div>
