@@ -1,7 +1,54 @@
 /* Milligram overrides */
 :root {
+    /* CRT Colors grün */
+    --color-crt-waldgrün: #3a4b55;
+    --color-crt-wiesengrün: #59788a;
+    --color-crt-dunkelgrün: #1a3843;
+    --color-crt-hellgrün: #a6bbbe;
+    --color-crt-minze: #8ea6aa;
+    --color-crt-super-hellgrün: #e0ddd8;
+
+    /* CRT Colors blau */  
+    --color-crt-blau-stufe-1: #e5ecf4;
+    --color-crt-blau-stufe-2: #c4d1e0;
+    --color-crt-blau-stufe-3: #a2b7cc;
+    --color-crt-blau-stufe-4: #80a3b8;
+    --color-crt-blau-stufe-5: #5e8fb4;
+    --color-crt-blau-stufe-6: #3c7ba0;
+    --color-crt-blau-stufe-7: #1a669c;
+    --color-crt-blau-stufe-8: #005f8c;
+    --color-crt-blau-stufe-9: #005881;
+    --color-crt-blau-stufe-10: #004e72;
+    --color-crt-blau-stufe-11: #003a53;
+    --color-crt-blau-stufe-12: #002a3c;
+
+    /* CRT Colors grau */
+    --color-crt-grau-stufe-1: #efefef;
+    --color-crt-grau-stufe-2: #d9d9d9;
+    --color-crt-grau-stufe-3: #b2b2b2;
+    --color-crt-grau-stufe-4: #8c8c8c;
+    --color-crt-grau-stufe-5: #666666;
+    --color-crt-grau-stufe-6: #404040;
+    --color-crt-grau-stufe-7: #292929;
+    --color-crt-grau-stufe-8: #222222;
+    --color-crt-grau-stufe-9: #1a1a1a;
+    --color-crt-grau-stufe-10: #000000;
+
+    --color-crt-rot-stufe-1: #fce4e4;
+    --color-crt-rot-stufe-2: #f8d7da;
+    --color-crt-rot-stufe-3: #f5c6cb;
+    --color-crt-rot-stufe-4: #f1b0b7;
+    --color-crt-rot-stufe-5: #ec7a82;
+    --color-crt-rot-stufe-6: #e63946;
+    --color-crt-rot-stufe-7: #d62839;
+    --color-crt-rot-stufe-8: #9d0208;
+    --color-crt-rot-stufe-9: #720026;
+    --color-crt-rot-stufe-10: #4a0000;
+    --color-crt-rot-stufe-11: #3b0a45;
+    --color-crt-rot-stufe-12: #3b0a45;
+
     /* The following are official CakePHP colors */
-    --color-cakephp-red: #d33c43;
+    --color-cakephp-red: #442858;
     --color-cakephp-gray: #404041;
     --color-cakephp-blue: #1b273d;
     --color-cakephp-lightblue: #34bdd7;
@@ -33,19 +80,16 @@
 }
 
 .button, button, input[type='button'], input[type='reset'], input[type='submit'] {
-    background-color: var(--color-cakephp-red);
-    border-color: var(--color-cakephp-red);
-    padding: 0px 4px 0px 4px;
+    background-color: var(--color-crt-blau-stufe-4);
+    border: none;
 }
 
-.button a {
-    padding: 0px 4px 0px 4px;
-}
 
 body {
     font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
     font-weight: 400;
-    background: var(--color-main-bg);
+    background: var(--color-crt-blau-stufe-1);
+    color: var(--color-crt-grau-stufe-7);
 }
 
 .top-nav-links,
@@ -55,8 +99,9 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 h1, h2, h3, h4, h5, h6 {
+    font-size: 3.6rem;
     font-weight: 400;
-    color: var(--color-headings);
+    color: var(--color-crt-grau-stufe-7);
 }
 
 a {
@@ -71,6 +116,48 @@ a:active {
     transition: color 0.2s ease-out;
 }
 
+.button:focus,.button:hover,button:focus,button:hover,input[type='button']:focus,input[type='button']:hover,input[type='reset']:focus,input[type='reset']:hover,input[type='submit']:focus,input[type='submit']:hover{
+    background-color: var(--color-crt-blau-stufe-12);
+    border: none;
+    color: var(--color-white);
+    transition: background .4s,color .4s;
+}
+
+input::file-selector-button {
+    background-color: var(--color-crt-blau-stufe-4);
+    height: 38px;
+    font-family: inherit;
+    color: var(--color-white);
+    padding: 0px 30px;
+    border: none;
+    border-radius: 3px;
+    font-size: 1.1rem;
+    font-weight: 700;
+    letter-spacing: .1rem;
+    text-transform: uppercase;
+  }
+
+  input::file-selector-button:hover {
+    background-color: var(--color-crt-blau-stufe-12);
+    height: 38px;
+    font-family: inherit;
+    color: var(--color-white);
+    padding: 0px 30px;
+    border: none;
+    border-radius: 3px;
+    font-size: 1.1rem;
+    font-weight: 700;
+    letter-spacing: .1rem;
+    text-transform: uppercase;
+    transition: background .4s,color .4s;
+  }
+
+
+button a:hover,
+button a:focus {
+    color: var(--color-white);
+}
+
 .side-nav a,
 .top-nav-links a,
 th a,
@@ -78,12 +165,11 @@ th a,
     /*color: var(--color-white);*/
 }
 
-.side-nav a:hover,
-.side-nav a:focus,
-.actions a:hover,
-.actions a:focus {
-    color: var(--color-links-active);
+.side-nav a,
+.top-nav-links a:hover {
+    color: var(--color-crt-blau-stufe-4);
 }
+
 
 /* Utility */
 .table-responsive {
@@ -94,6 +180,10 @@ th a,
 }
 
 /* Main */
+.container {
+    padding-top: 2rem;
+}
+
 .content {
     padding: 2rem;
     background: var(--color-white);
@@ -107,7 +197,22 @@ th a,
 }
 .actions a {
     font-weight: bold;
-    padding: 0 0.4rem;
+    padding: 0 0.8rem 0.4rem 0.8rem;
+}
+
+.deleteLink:hover, .deleteLink:focus, .deleteLink:active {
+    cursor: pointer;
+}
+
+.btn-danger {
+    background-color: var(--color-crt-rot-stufe-7);
+    border: none;
+    color: var(--color-white);
+}
+.btn-danger:hover {
+    background-color: var(--color-crt-rot-stufe-8);
+    border: none;
+    color: var(--color-white);
 }
 /*.actions a:first-child {
     padding-left: 0;
@@ -124,16 +229,18 @@ th {
     max-width: 112rem;
     padding: 2rem;
     margin: 0 auto;
+    background-color: var(--color-crt-blau-stufe-12);
 }
 .top-nav-title a {
     font-size: 2.4rem;
-    color: var(--color-cakephp-red);
+    color: var(--color-white);
 }
 .top-nav-title span {
-    color: var(--color-cakephp-gray);
+    color: var(--color-crt-blau-stufe-4);
 }
 .top-nav-links a {
     margin: 0 0.5rem;
+    color: var(--color-white);
 }
 .top-nav-title a,
 .top-nav-links a {

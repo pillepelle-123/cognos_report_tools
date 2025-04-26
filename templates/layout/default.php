@@ -88,32 +88,33 @@ $cakeDescription = 'CakePHP: the rapid development php framework';
             function initDelete(id) {
                 const wrapper = document.getElementById(`delete-wrapper-${id}`);
                 
-                wrapper.innerHTML = `
-                    <span class="text-danger me-2">Sind Sie sicher?</span>
+                wrapper.innerHTML = `<p>
+                    <span class="text-danger me-2">Möchtest du wirklich löschen?</span><br>
                     <button onclick="confirmDelete('${id}')" 
                             class="btn btn-danger btn-sm">
-                        Löschen bestätigen
+                        Bestätigen
                     </button>
                     <button onclick="cancelDelete('${id}')" 
                             class="btn btn-secondary btn-sm">
                         Abbrechen
                     </button>
+                    </p>
                 `;
             }
 
-            function confirmDelete(id) {
+            function confirmDelete(id) { 
                 document.getElementById('deleteId').value = id;
+                console.log('deleteId', id);
                 document.getElementById('deleteForm').submit();
+                console.log('deleteForm', document.getElementById('deleteForm'));    
             }
 
             function cancelDelete(id) {
                 const wrapper = document.getElementById(`delete-wrapper-${id}`);
                 
                 wrapper.innerHTML = `
-                    <button onclick="initDelete('${id}')" 
-                            class="btn btn-danger btn-sm">
-                        Löschen
-                    </button>
+
+                    <img src="<?= $this->Url->build('img/icons/material_delete.svg') ?>" width="32" height="32" alt="Löschen" title="Löschen" onclick="initDelete('${id}')" class="deleteLink"/>
                 `;
             }
         </script>

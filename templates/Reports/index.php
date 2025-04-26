@@ -17,30 +17,20 @@
             <?php foreach ($reports as $report): ?>
 				<tr>
 					 <td><?= h($report->report_name) ?></td>
-					 <td><?= h($report->upload_timestamp) ?></td>
+					 <td><?= h(date_format($report->upload_timestamp,"d.m.Y | H:i:s")) ?></td>
 					 <td>
 						<!-- Anzeigen -->
-					 	<span title="Anzeigen"><?= $this->Html->image('icons/material_design_anzeigen.svg', array('height' => '100', 'width' => '100','url' => ['action' => 'view', $report->id])) ?>
-						</span>
-						<?= $this->Html->link('Anzeigen', 
-							['action' => 'view', $report->id], 
-							['class' => 'btn btn-primary btn-sm']) ?>
+					 	<?= $this->Html->image('icons/material_view.svg', array('title' => 'Anzeigen', 'height' => '32', 'width' => '32','url' => ['action' => 'view', $report->id])) ?>
 						<!-- Bearbeiten -->
-						<?= $this->Html->link('Bearbeiten', 
-							['action' => 'edit', $report->id], 
-							['class' => 'btn btn-secondary btn-sm']) ?>
+						<?= $this->Html->image('icons/material_edit.svg', array('title' => 'Bearbeiten', 'height' => '32', 'width' => '32','url' => ['action' => 'edit', $report->id])) ?>			
 						<!-- In App bearbeiten -->
-						<?= $this->Html->link('In App bearbeiten', 
-							['action' => 'apps', $report->id],
-							['class' => 'btn btn-info btn-sm']) ?>
-
+						<?= $this->Html->image('icons/crt_logo_32_32.png', array('title' => 'In CRT App bearbeiten', 'height' => '32', 'width' => '32','url' => ['action' => 'apps', $report->id])) ?>
 						<!-- Löschen -->
-						<form id="deleteForm" method="post" action="<?= $this->Url->build(['action' => 'delete', $report->id]) ?>" onsubmit="return confirmDelete(<?= $report->id ?>);">
+						<form style="display: inline;" id="deleteForm" method="post" action="<?= $this->Url->build(['action' => 'delete', $report->id]) ?>" onsubmit="return confirmDelete(<?= $report->id ?>);">
 							<span id="delete-wrapper-<?= $report->id ?>">
-							<button onclick="initDelete(<?= $report->id ?>)" 
-										class="btn btn-danger btn-sm">
-								Löschen
-							</button>
+								<img src="<?= $this->Url->build('img/icons/material_delete.svg') ?>" width="32" height="32" alt="Löschen" title="Löschen" onclick="initDelete(<?= $report->id ?>)" class="deleteLink"/>
+							
+			<!-- '/img/icons/material_design_delete.svg' ?d-->
 								
 							</span>
 						</form>

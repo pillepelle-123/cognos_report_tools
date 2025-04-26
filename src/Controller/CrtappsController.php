@@ -84,6 +84,11 @@ class CrtappsController extends AppController
             $selectedQueryName = $data['selected_query'];
             $selectedQueryXml = $data['queries'][$selectedQueryName]['xml'];
 
+            if (empty($data['selected_query'])) {
+                $this->Flash->error('Bitte wähle eine Query aus.');
+                return $this->redirect(['action' => 'queryExpander']);
+            }
+
             $selectedQuery = array("name" => $selectedQueryName, "xml" => $selectedQueryXml);
             
             // XML verarbeiten
