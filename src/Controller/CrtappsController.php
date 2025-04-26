@@ -156,8 +156,10 @@ class CrtappsController extends AppController
         $xml = $report->report_xml;
         // Daten aus dem Formular
         $data = $this->request->getData();
+        $query = $this->request->getQuery();
+
  
-        if ($this->request->is('post')) {
+        if ($this->request->is('post') && $this->request->getQuery('form') === 'form_data_items') {
         
             // Original XML laden
             $xmlContent = $report->report_xml;
@@ -239,6 +241,9 @@ class CrtappsController extends AppController
             );
         
             $this->set(name: compact('modifiedXmlContent'));
+            $this->request->getSession()->write(['QueryExpander.modifiedXmlContent'=> $modifiedXmlContent]);
+        } else if ($this->request->getQuery()['form'] = 'form_download') {
+            $this->downloadModifiedXml();
         }
     }
     public function downloadModifiedXml()
@@ -247,8 +252,6 @@ class CrtappsController extends AppController
         $report = $session->read('QueryExpander.report');
         $modifiedXmlContent = $session->read('QueryExpander.modifiedXmlContent');
         //$modifiedXmlContent = $this->request->getSession()->read('QueryExpander.modifiedXmlContent');
-
-
 
         return $this->response
             ->withStringBody($modifiedXmlContent)

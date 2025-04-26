@@ -1,7 +1,7 @@
 <?php
 // templates/Crtapps/query_expander_data_items.php
 
-//$modifiedXmlContent = $this->request->getSession()->read('QueryExpander.modifiedXmlContent');
+$modifiedXmlContent = $this->request->getSession()->read('QueryExpander.modifiedXmlContent');
 $report = $this->request->getSession()->read('QueryExpander.report');
 
 ?>
@@ -11,13 +11,15 @@ $report = $this->request->getSession()->read('QueryExpander.report');
 <div class="query-expander result">
     <h2>Ergebnis</h2>
     <div>  
+
         <?= $this->Form->create(null, [
-            'url' => ['controller' => 'Crtapps', 'action' => 'downloadModifiedXml']
+            'url' => ['controller' => 'Crtapps', 'action' => 'downloadModifiedXml', '?' => ['form' => 'form_download']],
         ]) ?>
         <?= $this->Form->button('XML herunterladen', [
             'class' => 'btn btn-success'
         ]) ?>
         <?= $this->Form->end() ?>
+
     </div>
     
     <div class="card mb-4">
