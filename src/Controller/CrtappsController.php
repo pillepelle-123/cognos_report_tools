@@ -22,11 +22,11 @@ class CrtappsController extends AppController
     
     public function queryExpander($report_id = null)
     {
-        $report = $this->Reports->get($report_id, [
-            'contain' => []
-        ]);
+        $report = $this->request->getSession()->read('QueryExpander.report');
+        // $report = $this->Reports->get($report_id, [
+        //     'contain' => []
+        // ]);
         $content = $report->report_xml;
-
         // Report Informationen in Session speichern, um sie in allen andern Funktionen hier zu benutzen
         $this->request->getSession()->write(['QueryExpander.report'=> $report]);
 

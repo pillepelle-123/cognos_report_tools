@@ -7,7 +7,7 @@
             <p>Erweitern Sie Ihre Cognos Queries mit zusätzlichen Parametern</p>
             <?=  $this->Html->link(
                 'Starten',
-                ['controller' => 'Crtapps', 'action' => 'queryExpander', $report->id],
+                ['controller' => 'Crtapps', 'action' => 'queryExpander'],
                 ['class' => 'btn btn-primary']
             ) 
            

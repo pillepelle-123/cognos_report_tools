@@ -93,5 +93,6 @@ class ReportsController extends AppController
     {
         $report = $this->Reports->get($id);
         $this->set(compact('report'));
+        $this->request->getSession()->write('QueryExpander.report', $report);
     }
 }

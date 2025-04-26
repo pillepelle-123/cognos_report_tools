@@ -34,6 +34,6 @@
 
     <?= $this->Html->link('Zurück', [
         'controller' => 'Reports',
-        'action' => 'apps']
+        'action' => 'apps', $report->id]
     , ['class' => 'btn btn-secondary mt-3']) ?>
 </div>
