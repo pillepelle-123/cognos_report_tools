@@ -248,15 +248,29 @@ class CrtappsController extends AppController
     }
     public function downloadModifiedXml()
     {
-        $session = $this->request->getSession();
-        $report = $session->read('QueryExpander.report');
-        $modifiedXmlContent = $session->read('QueryExpander.modifiedXmlContent');
-        //$modifiedXmlContent = $this->request->getSession()->read('QueryExpander.modifiedXmlContent');
+        // 1. Nur POST erlauben
+        $this->request->allowMethod(['post']);
 
-        return $this->response
-            ->withStringBody($modifiedXmlContent)
-            ->withType('xml')
-            ->withDownload($report->report_name.'_modified.xml');
+        // 2. Session-Daten lesen
+        $session = $this->request->getSession();
+        $xmlContent = $session->read('QueryExpander.modifiedXmlContent');
+        $report = $this->request->getSession()->read('QueryExpander.report');
+
+        // 3. Validierung
+        if (empty($xmlContent)) {
+            throw new \RuntimeException('Keine XML-Daten zum Download verfügbar');
+        }
+
+        // 4. Response vorbereiten
+        $response = $this->response
+            ->withType('application/xml')
+            //->withHeader('Content-Disposition', 'attachment; filename="'.$report->report_name.'modified_report.xml"')
+            ->withDownload($report->report_name.'_modified.xml')
+            ->withStringBody($xmlContent);
+
+        //
+
+        return $response;
     }
 
 }

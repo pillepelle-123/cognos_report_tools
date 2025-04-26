@@ -13,10 +13,13 @@ $report = $this->request->getSession()->read('QueryExpander.report');
     <div>  
 
         <?= $this->Form->create(null, [
-            'url' => ['controller' => 'Crtapps', 'action' => 'downloadModifiedXml', '?' => ['form' => 'form_download']],
+            'url' => ['action' => 'downloadModifiedXml'],
+            'type' => 'post',
+            'id' => 'downloadForm'
         ]) ?>
         <?= $this->Form->button('XML herunterladen', [
-            'class' => 'btn btn-success'
+            'class' => 'btn btn-success',
+            'id' => 'downloadBtn'
         ]) ?>
         <?= $this->Form->end() ?>
 
@@ -33,3 +36,12 @@ $report = $this->request->getSession()->read('QueryExpander.report');
         'action' => 'queryExpander_data_items']
     , ['class' => 'btn btn-secondary mt-3']) ?>
 </div>
+<script>
+document.getElementById('downloadBtn').addEventListener('click', function(e) {
+    // Formular absenden
+    document.getElementById('downloadForm').submit();
+    
+    // Alternative: Direkter Download-Link
+    // window.location.href = '<?= $this->Url->build(['action' => 'downloadModifiedXml']) ?>';
+});
+</script>
