@@ -13,6 +13,8 @@ class ReportsTable extends Table
         $this->setTable('reports');
         $this->setDisplayField('report_name');
         $this->setPrimaryKey('id');
+
+        $this->addBehavior('Timestamp');
     }
 
     public function validationDefault(Validator $validator): Validator
@@ -27,6 +29,12 @@ class ReportsTable extends Table
             ->scalar('report_xml')
             ->requirePresence('report_xml', 'create')
             ->notEmptyString('report_xml');
+        
+        $validator
+            ->scalar('username')
+            ->maxLength('username', 50)
+            ->requirePresence('username', 'create')
+            ->notEmptyString('username');
 
         return $validator;
     }

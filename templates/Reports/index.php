@@ -16,7 +16,7 @@
         <tbody>
             <?php foreach ($reports as $report): ?>
 				<tr>
-					 <td><?= h($report->report_name) ?></td>
+					 <td><?= h($report->report_name.'.xml') ?></td>
 					 <td><?= h(date_format($report->upload_timestamp,"d.m.Y | H:i:s")) ?></td>
 					 <td>
 						<!-- Anzeigen -->
@@ -24,7 +24,8 @@
 						<!-- Bearbeiten -->
 						<?= $this->Html->image('icons/material_edit.svg', array('title' => 'Bearbeiten', 'height' => '32', 'width' => '32','url' => ['action' => 'edit', $report->id])) ?>			
 						<!-- In App bearbeiten -->
-						<?= $this->Html->image('icons/crt_logo_32_32.png', array('title' => 'In CRT App bearbeiten', 'height' => '32', 'width' => '32','url' => ['action' => 'apps', $report->id])) ?>
+						<?= $this->Html->image('icons/crt_logo_32_32.png', array('title' => 'In CRT App bearbeiten', 'height' => '32', 'width' => '32','url' => ['action' => 'crtApps', $report->id])) ?>
+
 						<!-- Löschen -->
 						<form style="display: inline;" id="deleteForm" method="post" action="<?= $this->Url->build(['action' => 'delete', $report->id]) ?>" onsubmit="return confirmDelete(<?= $report->id ?>);">
 							<span id="delete-wrapper-<?= $report->id ?>">

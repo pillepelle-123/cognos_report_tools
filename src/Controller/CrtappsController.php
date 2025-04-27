@@ -22,6 +22,7 @@ class CrtappsController extends AppController
     
     public function queryExpander($report_id = null)
     {
+        $user = $this->user;
         $report = $this->request->getSession()->read('QueryExpander.report');
         // $report = $this->Reports->get($report_id, [
         //     'contain' => []
@@ -71,7 +72,7 @@ class CrtappsController extends AppController
                 die("Keine Queries in der XML-Datei gefunden. Ist dies eine gültige Cognos Report Definition?");
             }
             
-            $this->set(compact('report', 'queries'));
+            $this->set(compact('user', 'report', 'queries'));
 
         } catch (\Exception $e) {
             $this->Flash->error('Fehler beim Parsen und Auslesen der Queries: ' . $e->getMessage());
@@ -81,6 +82,7 @@ class CrtappsController extends AppController
 
     public function queryExpanderDataItems()
     {
+        $user = $this->user;
         $report = $this->request->getSession()->read('QueryExpander.report');
 
         //if ($this->request->is('post')) {
@@ -90,9 +92,9 @@ class CrtappsController extends AppController
                 return $this->redirect($this->referer());
             }
 
-            $data = $this->request->getData();
+            $data = $this->request->getData();         
             
-            if (empty($data['selected_query']) || !isset($data['queries'][$data['selected_query']])) {
+            if (!isEmpty($data['selected_query']) || !isset($data['selected_query'])) {
                 $this->Flash->error('Bitte wählen Sie eine Query aus');
                 return $this->redirect($this->referer());
             }
@@ -123,7 +125,7 @@ class CrtappsController extends AppController
             
             $dataItems = $this->extractDataItems($xml);
 
-            $this->set(compact('report', 'selectedQuery', 'dataItems'));
+            $this->set(compact('user', 'report', 'selectedQuery', 'dataItems'));
 
             return $this->render('query_expander_data_items' );
         //}
@@ -148,8 +150,9 @@ class CrtappsController extends AppController
         return $dataItems;
     }
 
-    public function queryExpanderResult() {
-        
+    public function queryExpanderResult() 
+    {
+        $user = $this->user;
         //$session = $this->request->getSession();
         //$dataItems = $session->read('QueryExpander.dataItems');
         $report = $this->request->getSession()->read('QueryExpander.report');
@@ -240,7 +243,7 @@ class CrtappsController extends AppController
                 $modifiedXmlContent
             );
         
-            $this->set(name: compact('modifiedXmlContent'));
+            $this->set(name: compact('user', 'modifiedXmlContent'));
             $this->request->getSession()->write(['QueryExpander.modifiedXmlContent'=> $modifiedXmlContent]);
         } else if ($this->request->getQuery()['form'] = 'form_download') {
             $this->downloadModifiedXml();

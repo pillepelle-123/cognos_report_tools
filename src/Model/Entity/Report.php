@@ -7,7 +7,7 @@ class Report extends Entity
 {
     /** @var array<string, bool> */
     protected array $_accessible = [
-        'user' => true,
+        'username' => true,
         'report_name' => true,
         'report_xml' => true,
         'upload_timestamp' => true,

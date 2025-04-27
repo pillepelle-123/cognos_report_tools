@@ -28,7 +28,9 @@ use Cake\Event\EventInterface;
  * @link https://book.cakephp.org/5/en/controllers.html#the-app-controller
  */
 class AppController extends Controller
+
 {
+    protected $user;
     /**
      * Initialization hook method.
      *
@@ -46,12 +48,34 @@ class AppController extends Controller
         $this->loadComponent('Authentication.Authentication');
         $this->viewBuilder()->setHelpers(['Authentication.Identity']); // wichtig für Views!
 
+        $this->user = $this->request->getAttribute('identity');
+
+        // $identity = $this->request->getAttribute('identity');
+        // $this->username = $identity ? $identity->get('username') : null; //$this->request->getSession()->read
+
+        // Vermutlich veraltet
+        // $this->loadComponent('Auth', [
+        //     'authenticate' => [
+        //         'Form' => [
+        //             'fields' => ['username' => 'username', 'password' => 'password']
+        //         ]
+        //     ],
+        //     'loginAction' => ['controller' => 'Users', 'action' => 'login'],
+        //     'unauthorizedRedirect' => $this->referer()
+        // ]);
 
         /*
          * Enable the following component for recommended CakePHP form protection settings.
          * see https://book.cakephp.org/5/en/controllers/components/form-protection.html
          */
         //$this->loadComponent('FormProtection');
+    }
+
+    public function isAuthorized($user)
+    {
+        // Standardmäßig: Nur eingeloggte Benutzer haben Zugriff
+        // Admin bekommt vollen Zugriff
+        return isset($user['role']) && $user['role'] === 'admin';
     }
 
     // public function beforeFilter(EventInterface $event)

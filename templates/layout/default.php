@@ -16,6 +16,8 @@
 
 use Cake\Routing\Router;
 
+use function PHPUnit\Framework\isEmpty;
+
 $cakeDescription = 'CakePHP: the rapid development php framework';
 ?>
 <!DOCTYPE html>
@@ -58,6 +60,7 @@ $cakeDescription = 'CakePHP: the rapid development php framework';
 
 </head>
 <body>
+    <div class="top-nav-container">
     <nav class="top-nav">
         <div class="top-nav-title">
             <a href="<?= $this->Url->build('/') ?>"><span>C</span>ongos <span>R</span>eport <span>T</span>ools  </a>
@@ -67,7 +70,7 @@ $cakeDescription = 'CakePHP: the rapid development php framework';
 
             <?php if ($this->Identity->isLoggedIn()): ?>
                 <ul id="user_menu">
-                <li><?php echo $this->Identity->get('username'); ?></li>
+                <li><?php echo $user->username; ?></li>
                 <li><?php echo $this->Html->link('Profil editieren', url: ['controller' => 'Users', 'action' => 'edit']); ?></li>
                 <li><?php echo $this->Html->link('Logout', url: ['controller' => 'Users', 'action' => 'logout']); ?></li>
                 </ul>
@@ -75,7 +78,17 @@ $cakeDescription = 'CakePHP: the rapid development php framework';
             <?php endif; ?>    
 
         </div>
+        
     </nav>
+    <div class="breadcrumb">
+
+            <?php if (!empty($report)): ?>
+                <?php h($report->report_name) . '&nbsp;';
+                echo $this->Html->image('icons/material_view.svg', array('title' => 'Report', 'height' => '16', 'width' => '16'));
+                 ?>
+            <?php endif; ?>
+        </div>
+    </div>
     <main class="main">
         <div class="container">
             <?= $this->Flash->render() ?>

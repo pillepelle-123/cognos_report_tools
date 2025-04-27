@@ -39,14 +39,14 @@ return function (RouteBuilder $routes): void {
         $builder->connect('/edit/*', ['controller' => 'Reports', 'action' => 'edit']);
         $builder->connect('/view/*', ['controller' => 'Reports', 'action' => 'view']);
         $builder->connect('/delete/*', ['controller' => 'Reports', 'action' => 'delete']);
-        $builder->connect('/apps/*', ['controller' => 'Reports', 'action' => 'apps']);
+        $builder->connect('/crt-apps/*', ['controller' => 'Reports', 'action' => 'crtApps']);
 
         /*$builder->connect('/query-expander/:report_id', 
             ['controller' => 'Apps', 'action' => 'queryExpander']
         )->setPass(['report_id']);*/
 
         //App-spezifische Routen
-        $builder->connect('/users/edit-profile', ['controller' => 'Users', 'action' => 'edit']);
+        $builder->connect('/users/edit', ['controller' => 'Users', 'action' => 'edit']);
 
 
         /*$builder->connect('/query-expander/:report_id', 
@@ -60,7 +60,7 @@ return function (RouteBuilder $routes): void {
 
 
     
-     $routes->scope('/crtapps', function (RouteBuilder $builder): void {
+     $routes->scope('/crt', function (RouteBuilder $builder): void {
        
         $builder->connect('/query-expander/*', ['controller' => 'Crtapps', 'action' => 'queryExpander']);
         $builder->connect('/query-expander-data-items', ['controller' => 'Crtapps', 'action' => 'queryExpanderDataItems']);

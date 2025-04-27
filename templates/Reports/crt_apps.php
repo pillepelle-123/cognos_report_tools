@@ -1,6 +1,5 @@
 <div class="apps index">
-    <h2>App Hub für Report: <?= h($report->report_name) ?></h2>
-    
+    <h1>App Hub</h1>    
     <div class="app-list">
         <div class="app-card">
             <h3>Query Expander</h3>
