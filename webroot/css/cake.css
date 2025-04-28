@@ -92,7 +92,7 @@ body {
     color: var(--color-crt-grau-stufe-7);
 }
 
-.top-nav-links,
+
 .side-nav,
 h1, h2, h3, h4, h5, h6 {
     font-family: "Raleway", sans-serif;
@@ -441,6 +441,7 @@ input[type='color'] {
     }
     .top-nav {
         margin: 0 auto;
+        color: var(--color-white);
     }
     .side-nav {
         margin-bottom: 1rem;

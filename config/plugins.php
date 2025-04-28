@@ -1,9 +1,9 @@
 <?php
 
 return [
-    'DebugKit' => [
-        'onlyDebug' => true,
-    ],
+    // 'DebugKit' => [
+    //     'onlyDebug' => true,
+    // ],
     'Bake' => [
         'onlyCli' => true,
         'optional' => true,

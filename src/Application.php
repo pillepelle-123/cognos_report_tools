@@ -64,6 +64,7 @@ class Application extends BaseApplication implements AuthenticationServiceProvid
                 (new TableLocator())->allowFallbackClass(false)
             );
         }
+
     }
 
     /**

@@ -3,7 +3,6 @@ declare(strict_types=1);
 
 namespace QueryExpander\Controller;
 
-use function PHPUnit\Framework\isEmpty;
 use App\Controller\AppController as BaseController;
 use QueryExpander\Lib\QueryExpanderUtility;
 
@@ -86,9 +85,9 @@ class QueryExpanderController extends BaseController
             return $this->redirect($this->referer());
         }
 
-        $data = $this->request->getData();         
-        
-        if (!isEmpty($data['selected_query']) || !isset($data['selected_query'])) {
+        $data = $this->request->getData();   
+
+        if (!isset($data['selected_query'])) {
             $this->Flash->error('Bitte wählen Sie eine Query aus');
             return $this->redirect($this->referer());
         }
@@ -98,7 +97,7 @@ class QueryExpanderController extends BaseController
         $selectedQuery = $data['queries'][$selectedIndex];
 
 
-        if (!isset($selectedQuery['name']) || !isEmpty($selectedQuery['name']) || !isset($selectedQuery['xml']) || !isEmpty($selectedQuery['xml'])) {
+        if (!isset($selectedQuery['name']) || !isset($selectedQuery['xml'])) {
             $this->Flash->error('Ungültige Query-Daten');
             return $this->redirect($this->referer());
         }
@@ -226,7 +225,7 @@ class QueryExpanderController extends BaseController
         } else if ($this->request->is('post') && $this->request->getQuery()['form'] = 'form_download') {
             $this->resultDownload();
         }
-        $this->set('title', 'Result');
+        $this->set('title', 'Ergebnis');
     }
 
     public function resultDownload()  // Umbenannt von downloadModifiedXml()

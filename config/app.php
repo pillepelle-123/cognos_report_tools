@@ -317,6 +317,28 @@ return [
              */
             //'init' => ['SET GLOBAL innodb_stats_on_metadata = 0'],
         ],
+        'localhost' => [
+            'className' => Connection::class,
+            'driver' => Mysql::class,
+            'persistent' => false,
+            'timezone' => 'UTC',
+            'encoding' => 'utf8mb4',
+            'flags' => [],
+            'cacheMetadata' => true,
+            'log' => false,
+            'quoteIdentifiers' => false,
+        ],
+        'crt.pillepelle.de' => [
+            'className' => Connection::class,
+            'driver' => Mysql::class,
+            'persistent' => false,
+            'timezone' => 'UTC',
+            'encoding' => 'utf8mb4',
+            'flags' => [],
+            'cacheMetadata' => true,
+            'log' => false,
+            'quoteIdentifiers' => false,
+        ],
 
         /*
          * The test connection is used during the test suite.
