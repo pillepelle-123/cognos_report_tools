@@ -1,16 +1,12 @@
-<?php
-// templates/Crtapps/query_expander.php
-?>
 <div class="query-expander">
-    <h2>Query Expander für: <?= h($report->report_name) ?></h2>
-    
+    <h2><?= $this->get('title') ?></h2>   
     <?= $this->Form->create(null, [
-        'url' => ['controller' => 'Crtapps', 'action' => 'queryExpanderDataItems'],
+        'url' => [/*'controller' => 'Crtapps',*/ 'action' => 'settings'],
         'type' => 'post'
     ]) ?>
     
     <fieldset>
-    <legend>Query auswählen</legend>
+    <p>Query auswählen</p>
     <?php foreach ($queries as $index => $query): ?>
         <div class="form-check">
             <?= $this->Form->radio('selected_query', [
@@ -32,8 +28,4 @@
     <?= $this->Form->button('Weiter', ['class' => 'btn btn-primary']) ?>
     <?= $this->Form->end() ?>
 
-    <?= $this->Html->link('Zurück', [
-        'controller' => 'Reports',
-        'action' => 'apps', $report->id]
-    , ['class' => 'btn btn-secondary mt-3']) ?>
 </div>

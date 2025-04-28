@@ -1,4 +1,4 @@
-<h1>Profil bearbeiten</h1>
+<h2><?= $this->get('title') ?></h2>
 
 <?= $this->Form->create($user, ['action' => 'edit', 'type' => 'post']) ?>
     <fieldset>
@@ -24,4 +24,3 @@
     </fieldset>
     <?= $this->Form->button('Speichern') ?>
 <?= $this->Form->end() ?>
-<div><?= $this->Html->link('Zurück', ['controller' => 'Reports', 'action' => 'index']) ?></div>

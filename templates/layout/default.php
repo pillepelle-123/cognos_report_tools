@@ -81,13 +81,77 @@ $cakeDescription = 'CakePHP: the rapid development php framework';
         
     </nav>
     <div class="breadcrumb">
+        <div class="breadcrumb-navigation">
+            <?php
+            
+            
+            // switch($this->getTemplate()):
+            //     case 'upload':
+            //     case 'view':
+            //     case 'edit':
+            //     case 'add':
+            //     case 'crtApps':
+            //         $backLink .= $this->Html->link('Portal', url: '/');
+            //         break;
+            //     case 'queries':
+            //         $backLink .= $this->Html->link('▶ App Hub', ['plugin' => false, 'controller' => 'Reports', 'action' => 'crtApps', '?' => ['report_id' => $report->id]]);
+            //         break;
+            //     case 'settings':
+            //         $backLink .= $this->Html->link('◀ Auswahl Query', ['action' => 'queries']);
+            //         break;
+            //     case 'result':
+            //         $backLink .= $this->Html->link('◀ Einstellungen Data Items', ['action' => 'settings']);
+            //         break;
+            //     endswitch;
 
+            if ($this->Identity->isLoggedIn()) {
+                $template = $this->getTemplate();
+                $plugin = $this->getPlugin();
+                $backLink = '';
+                if ($template !== 'index') {
+                    $backLink .= $this->Html->link('Portal', url: '/');
+                }
+
+                if ($plugin === 'QueryExpander') {
+                    $backLink .= '&nbsp;▶&nbsp;' . $this->Html->link('App Hub', ['plugin' => false, 'controller' => 'Reports', 'action' => 'crtApps', '?' => ['report_id' => $report->id]]);
+                    if ($template === 'settings' || $template === 'result') {
+                        $backLink .= '&nbsp;▶&nbsp;' . $this->Html->link('Auswahl Query', [
+                            'action' => 'queries']);
+                            if ($template === 'result') {
+                                $backLink .= '&nbsp;▶&nbsp;' . $this->Html->link('Data Item Settings', [
+                                    'action' => 'settings']);
+                            }
+                    } 
+                } 
+
+                // if ($template === 'queries') {
+                //     $backLink .= '&nbsp;▶&nbsp;' . $this->Html->link('App Hub', ['plugin' => false, 'controller' => 'Reports', 'action' => 'crtApps', '?' => ['report_id' => $report->id]]);
+                // } else if ($template === 'settings') {
+                //     $backLink .= '&nbsp;▶&nbsp;' . $this->Html->link('Auswahl Query', [
+                //         'action' => 'queries']);
+                // } else if ($template === 'result') {
+                //     $backLink .= '&nbsp;▶&nbsp;' . $this->Html->link('Data Item Settings', [
+                //         'action' => 'settings']);
+                // }
+                if ($template !== 'index') {
+                    $backLink .= '&nbsp;▶&nbsp;';
+                }
+                $backLink .= $this->get('title');
+
+                echo $backLink; 
+            }
+            
+            
+            ?>
+        </div>
+        <div class="breadcrumb-report">
             <?php if (!empty($report)): ?>
-                <?php h($report->report_name) . '&nbsp;';
+                <?php echo h($report->report_name) . '&nbsp;';
                 echo $this->Html->image('icons/material_view.svg', array('title' => 'Report', 'height' => '16', 'width' => '16'));
                  ?>
             <?php endif; ?>
         </div>
+    </div>
     </div>
     <main class="main">
         <div class="container">
@@ -124,9 +188,7 @@ $cakeDescription = 'CakePHP: the rapid development php framework';
 
             function cancelDelete(id) {
                 const wrapper = document.getElementById(`delete-wrapper-${id}`);
-                
                 wrapper.innerHTML = `
-
                     <img src="<?= $this->Url->build('img/icons/material_delete.svg') ?>" width="32" height="32" alt="Löschen" title="Löschen" onclick="initDelete('${id}')" class="deleteLink"/>
                 `;
             }

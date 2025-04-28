@@ -1,9 +1,8 @@
 <div class="reports view">
-    <h2>Report anzeigen: <?= h($report->report_name) ?></h2>
+    <h2><?= $this->get('title') ?></h2>
     
     <div class="actions">
-        <?= $this->Html->link('Bearbeiten', ['action' => 'edit', $report->id], ['class' => 'button']) ?>
-        <?= $this->Html->link('Zurück', ['action' => 'index']) ?>
+        <?= $this->Html->link('Bearbeiten', ['action' => 'edit', '?' => ['report_id' => $report->id]], ['class' => 'button']) ?>
     </div>
     
     <pre><?= h($report->report_xml) ?></pre>

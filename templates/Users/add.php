@@ -1,3 +1,4 @@
+<h2><?= $this->get('title') ?></h2>
 <div class="users form">
 <?= $this->Form->create($user) ?>
     <fieldset>
@@ -17,4 +18,3 @@
 <?= $this->Form->button(__('Submit')); ?>
 <?= $this->Form->end() ?>
 </div>
-<div><?= $this->Html->link('Zurück', ['controller' => 'Reports', 'action' => 'index']) ?></div>

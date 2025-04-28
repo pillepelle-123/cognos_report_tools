@@ -1,17 +1,13 @@
 <?php
-// templates/Crtapps/query_expander_data_items.php
-
 $report = $this->request->getSession()->read('QueryExpander.report');
-//$selectedQuery = $this->request->getSession()->read('QueryExpander.selectedQuery');
-//$dataItems = $this->request->getSession()->read('QueryExpander.dataItems');
-
 
 ?>
 <div class="query-expander data-items">
-    <h2>Data Items für Query: <?= h($selectedQuery['name']) ?> in Report <?= h($report['name'])?></h2>
+    <h2><?= $this->get('title') ?></h2>
+    <p>für Query: <code><?= h($selectedQuery['name']) ?></code></p>
     
     <?= $this->Form->create(null, [
-        'url' => ['action' => 'queryExpanderResult', '?' => ['form' => 'form_data_items']],
+        'url' => ['action' => 'result', '?' => ['form' => 'form_data_items']],
     ]) ?>
     
     <table class="table">
@@ -53,7 +49,4 @@ $report = $this->request->getSession()->read('QueryExpander.report');
     <?= $this->Form->button('Weiter', ['class' => 'btn btn-primary mt-3']) ?>
     <?= $this->Form->end() ?>
 
-    <?= $this->Html->link('Zurück', [
-        'action' => 'queryExpander']
-    , ['class' => 'btn btn-secondary mt-3']) ?>
 </div>

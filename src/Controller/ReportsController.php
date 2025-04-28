@@ -26,6 +26,7 @@ class ReportsController extends AppController
             //Identity->get('username')
             ->order(['upload_timestamp' => 'DESC']);
         $this->set(compact('user', 'reports'));
+        $this->set('title', 'Portal');
     }
 
     /**
@@ -58,6 +59,7 @@ class ReportsController extends AppController
             }
         }
         $this->set(compact('user'));
+        $this->set('title', 'Report hochladen');
     }
 
     /**
@@ -65,10 +67,11 @@ class ReportsController extends AppController
      * @param mixed $id
      * @return void
      */
-    public function view($id = null) 
+    public function view() 
     {
         $user = $this->user;
-        $report = $this->Reports->get(primaryKey: $id);
+        $reportId = $this->request->getQuery('report_id');
+        $report = $this->Reports->get(primaryKey: $reportId);
         /*$filepath = WWW_ROOT . 'reports' . DS . $filename;
         $content = file_get_contents($filepath);*/
         
@@ -76,6 +79,7 @@ class ReportsController extends AppController
         $this->set('content', $report->report_xml);
 
         $this->set(compact('user', 'report'));
+        $this->set('title', 'Bericht anzeigen');
     }
 
     /**
@@ -83,10 +87,11 @@ class ReportsController extends AppController
      * @param mixed $id
      * @return \Cake\Http\Response|null
      */
-    public function edit($id = null)
+    public function edit()
     {
         $user = $this->user;
-        $report = $this->Reports->get($id);
+        $reportId = $this->request->getQuery('report_id');
+        $report = $this->Reports->get($reportId);
         
         if ($this->request->is(['post', 'put'])) {
             $report = $this->Reports->patchEntity($report, $this->request->getData());
@@ -100,14 +105,15 @@ class ReportsController extends AppController
         }
         
         $this->set(compact('user', 'report'));
+        $this->set('title', 'Bericht bearbeiten');
     }
 
-    public function delete($id = null)
+    public function delete()
     {
         $this->request->allowMethod(['post', 'delete']);
-        
-        $report = $this->Reports->get($id);
-        
+        $reportId = $this->request->getQuery('report_id');        
+        $report = $this->Reports->get($reportId);
+
         if ($this->Reports->delete($report)) {
             $this->Flash->success('Report wurde gelöscht.');
         } else {
@@ -117,13 +123,14 @@ class ReportsController extends AppController
         return $this->redirect(['action' => 'index']);
     }
 
-    public function crtApps($id = null)
+    public function crtApps()
     {
-        $this->request->getSession()->read('QueryExpander.report');
         $user = $this->user;
-        $report = $this->Reports->get($id);
+        $reportId = $this->request->getQuery('report_id');
+        $report = $this->Reports->get($reportId);
         $this->request->getSession()->write('QueryExpander.report', $report);
         $this->set(compact('user', 'report'));
+        $this->set('title', 'App Hub');
 
     }
 

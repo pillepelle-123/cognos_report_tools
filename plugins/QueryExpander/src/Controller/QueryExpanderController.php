@@ -1,26 +1,20 @@
 <?php
-namespace App\Controller;
+declare(strict_types=1);
 
-use App\Controller\AppController;
-use Cake\ORM\TableRegistry;
+namespace QueryExpander\Controller;
 
 use function PHPUnit\Framework\isEmpty;
+use App\Controller\AppController as BaseController;
+use QueryExpander\Lib\QueryExpanderUtility;
 
-class CrtappsController extends AppController
+class QueryExpanderController extends BaseController
 {
-    protected $Reports;
-    protected $report; // ausgewählte Report-Instanz
-
     public function initialize(): void
     {
         parent::initialize();
-        // WICHTIG PSt: Hier wird die Reports-Tabelle geladen #########################
-        $this->Reports = $this->fetchTable('Reports');
-        
-
     }
-    
-    public function queryExpander($report_id = null)
+
+    public function queries()  // Umbenannt von queryExpander()
     {
         $user = $this->user;
         $report = $this->request->getSession()->read('QueryExpander.report');
@@ -69,7 +63,7 @@ class CrtappsController extends AppController
 
             
             if (empty($queries)) {
-                die("Keine Queries in der XML-Datei gefunden. Ist dies eine gültige Cognos Report Definition?");
+                die("Keine Queries in der XML-Datei gefunden. Ist dies eine gültige Congos Report Definition?");
             }
             
             $this->set(compact('user', 'report', 'queries'));
@@ -77,80 +71,64 @@ class CrtappsController extends AppController
         } catch (\Exception $e) {
             $this->Flash->error('Fehler beim Parsen und Auslesen der Queries: ' . $e->getMessage());
             return $this->redirect(['controller' => 'Reports', 'action' => 'index']);
-        }    
+        } 
+        $this->set('title', 'Query Expander');
     }
 
-    public function queryExpanderDataItems()
+    public function settings()  // Umbenannt von queryExpanderDataItems()
     {
         $user = $this->user;
         $report = $this->request->getSession()->read('QueryExpander.report');
 
-        //if ($this->request->is('post')) {
 
-            if (!$this->request->is('post')) {
-                $this->Flash->error('Ungültige Anfragemethode');
-                return $this->redirect($this->referer());
-            }
+        if (!$this->request->is('post')) {
+            $this->Flash->error('Ungültige Anfragemethode');
+            return $this->redirect($this->referer());
+        }
 
-            $data = $this->request->getData();         
-            
-            if (!isEmpty($data['selected_query']) || !isset($data['selected_query'])) {
-                $this->Flash->error('Bitte wählen Sie eine Query aus');
-                return $this->redirect($this->referer());
-            }
-
-            // Ausgewählte Query ermitteln, Name und XML auslesen
-            $selectedIndex = $data['selected_query'];
-            $selectedQuery = $data['queries'][$selectedIndex];
-
-
-            if (!isset($selectedQuery['name']) || !isEmpty($selectedQuery['name']) || !isset($selectedQuery['xml']) || !isEmpty($selectedQuery['xml'])) {
-                $this->Flash->error('Ungültige Query-Daten');
-                return $this->redirect($this->referer());
-            }
-
-            $selectedQueryName = $selectedQuery['name'];
-            $selectedQueryXml = $selectedQuery['xml'];
-            
-
-            
-            //$selectedQuery = array("name" => $selectedQueryName, "xml" => $selectedQueryXml);
-            
-            // XML verarbeiten
-            $xml = simplexml_load_string($selectedQueryXml);
-            if ($xml === false) {
-                $this->Flash->error('Fehler beim Parsen der Query XML');
-                return $this->redirect($this->referer());
-            }
-            
-            $dataItems = $this->extractDataItems($xml);
-
-            $this->set(compact('user', 'report', 'selectedQuery', 'dataItems'));
-
-            return $this->render('query_expander_data_items' );
-        //}
+        $data = $this->request->getData();         
         
-        //$this->Flash->error('Ungültiger Zugriff');
-        //return $this->redirect(['action' => 'queryExpander']);
-    }
-    
-    function extractDataItems($xml) {
-        $dataItems = [];
-        $i = 0;
-        foreach ($xml->xpath('.//dataItem') as $dataItem) {
-            $dataItems[(string)$dataItem['name']] = [
-                'index'=> $i,
-                'name'=> (string)$dataItem['name'],
-                'xml' => $dataItem->asXML(),
-                'expression' => (string)$dataItem->expression
-            ];
-            $i++;
+        if (!isEmpty($data['selected_query']) || !isset($data['selected_query'])) {
+            $this->Flash->error('Bitte wählen Sie eine Query aus');
+            return $this->redirect($this->referer());
+        }
+
+        // Ausgewählte Query ermitteln, Name und XML auslesen
+        $selectedIndex = $data['selected_query'];
+        $selectedQuery = $data['queries'][$selectedIndex];
+
+
+        if (!isset($selectedQuery['name']) || !isEmpty($selectedQuery['name']) || !isset($selectedQuery['xml']) || !isEmpty($selectedQuery['xml'])) {
+            $this->Flash->error('Ungültige Query-Daten');
+            return $this->redirect($this->referer());
+        }
+
+        $selectedQueryName = $selectedQuery['name'];
+        $selectedQueryXml = $selectedQuery['xml'];
+        
+
+        
+        //$selectedQuery = array("name" => $selectedQueryName, "xml" => $selectedQueryXml);
+        
+        // XML verarbeiten
+        $xml = simplexml_load_string($selectedQueryXml);
+        if ($xml === false) {
+            $this->Flash->error('Fehler beim Parsen der Query XML');
+            return $this->redirect($this->referer());
         }
         
-        return $dataItems;
+        $dataItems = QueryExpanderUtility::extractDataItems($xml);
+#
+        $this->set(compact('user', 'report', 'selectedQuery', 'dataItems'));
+
+        //$this->Flash->error('Ungültiger Zugriff');
+        //return $this->redirect(['action' => 'queryExpander']);
+        $this->set('title', 'Data Item Settings');
+        return $this->render('settings' );
+
     }
 
-    public function queryExpanderResult() 
+    public function result()  // Umbenannt von queryExpanderResult()
     {
         $user = $this->user;
         //$session = $this->request->getSession();
@@ -243,13 +221,15 @@ class CrtappsController extends AppController
                 $modifiedXmlContent
             );
         
-            $this->set(name: compact('user', 'modifiedXmlContent'));
+            $this->set(name: compact('user', 'report', 'modifiedXmlContent'));
             $this->request->getSession()->write(['QueryExpander.modifiedXmlContent'=> $modifiedXmlContent]);
-        } else if ($this->request->getQuery()['form'] = 'form_download') {
-            $this->downloadModifiedXml();
+        } else if ($this->request->is('post') && $this->request->getQuery()['form'] = 'form_download') {
+            $this->resultDownload();
         }
+        $this->set('title', 'Result');
     }
-    public function downloadModifiedXml()
+
+    public function resultDownload()  // Umbenannt von downloadModifiedXml()
     {
         // 1. Nur POST erlauben
         $this->request->allowMethod(['post']);
@@ -271,9 +251,6 @@ class CrtappsController extends AppController
             ->withDownload($report->report_name.'_modified.xml')
             ->withStringBody($xmlContent);
 
-        //
-
         return $response;
     }
-
 }
