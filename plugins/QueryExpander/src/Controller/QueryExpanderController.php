@@ -80,49 +80,48 @@ class QueryExpanderController extends BaseController
         $report = $this->request->getSession()->read('QueryExpander.report');
 
 
-        if (!$this->request->is('post')) {
-            $this->Flash->error('Ungültige Anfragemethode');
-            return $this->redirect($this->referer());
+        if ($this->request->is('post')) {        
+
+            $data = $this->request->getData();   
+
+            if (!isset($data['selected_query'])) {
+                $this->Flash->error('Bitte wählen Sie eine Query aus');
+                return $this->redirect($this->referer());
+            }
+
+            // Ausgewählte Query ermitteln, Name und XML auslesen
+            $selectedIndex = $data['selected_query'];
+            $selectedQuery = $data['queries'][$selectedIndex];
+
+
+            if (!isset($selectedQuery['name']) || !isset($selectedQuery['xml'])) {
+                $this->Flash->error('Ungültige Query-Daten');
+                return $this->redirect($this->referer());
+            }
+            
+            // XML verarbeiten
+            $xml = simplexml_load_string($selectedQuery['xml']);
+            if ($xml === false) {
+                $this->Flash->error('Fehler beim Parsen der Query XML');
+                return $this->redirect($this->referer());
+            }
+            
+            $dataItems = QueryExpanderUtility::extractDataItems($xml);
+    #
+            $this->set(compact('user', 'report', 'selectedQuery', 'dataItems'));
+            $this->request->getSession()->write(['QueryExpander.selectedQuery'=> $selectedQuery]);
+            $this->request->getSession()->write(['QueryExpander.dataItems'=> $dataItems]);
+
+            //$this->Flash->error('Ungültiger Zugriff');
+            //return $this->redirect(['action' => 'queryExpander']);
+        } else {
+            $user = $this->user;
+            $report = $this->request->getSession()->read('QueryExpander.report');
+            $selectedQuery = $this->request->getSession()->read('QueryExpander.selectedQuery');
+            $dataItems = $this->request->getSession()->read('QueryExpander.dataItems');
         }
-
-        $data = $this->request->getData();   
-
-        if (!isset($data['selected_query'])) {
-            $this->Flash->error('Bitte wählen Sie eine Query aus');
-            return $this->redirect($this->referer());
-        }
-
-        // Ausgewählte Query ermitteln, Name und XML auslesen
-        $selectedIndex = $data['selected_query'];
-        $selectedQuery = $data['queries'][$selectedIndex];
-
-
-        if (!isset($selectedQuery['name']) || !isset($selectedQuery['xml'])) {
-            $this->Flash->error('Ungültige Query-Daten');
-            return $this->redirect($this->referer());
-        }
-
-        $selectedQueryName = $selectedQuery['name'];
-        $selectedQueryXml = $selectedQuery['xml'];
-        
-
-        
-        //$selectedQuery = array("name" => $selectedQueryName, "xml" => $selectedQueryXml);
-        
-        // XML verarbeiten
-        $xml = simplexml_load_string($selectedQueryXml);
-        if ($xml === false) {
-            $this->Flash->error('Fehler beim Parsen der Query XML');
-            return $this->redirect($this->referer());
-        }
-        
-        $dataItems = QueryExpanderUtility::extractDataItems($xml);
-#
-        $this->set(compact('user', 'report', 'selectedQuery', 'dataItems'));
-
-        //$this->Flash->error('Ungültiger Zugriff');
-        //return $this->redirect(['action' => 'queryExpander']);
         $this->set('title', 'Data Item Settings');
+        $this->set(compact('user', 'report', 'selectedQuery', 'dataItems'));
         return $this->render('settings' );
 
     }

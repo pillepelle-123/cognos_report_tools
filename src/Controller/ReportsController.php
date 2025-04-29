@@ -9,7 +9,8 @@ class ReportsController extends AppController
     {
         parent::initialize();
         $this->loadComponent('Flash');
-        
+    $this->Authentication->allowUnauthenticated(['login' /*, 'add'*/ ]); 
+
     }
 
     /**
@@ -18,6 +19,11 @@ class ReportsController extends AppController
      */
     public function index()
     {
+        // $query = $this->Users->find();
+        // $users = $this->paginate($query);
+        // $user = $this->Users->get($this->user->id, contain: []);
+        //$user = $this->Users->get($this->Authentication->getIdentity());//->get('id'));
+
         $user = $this->user;
         $reports = $this->Reports->find('all')
             ->where(['username' => $user->username])

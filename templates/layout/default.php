@@ -70,9 +70,14 @@ $cakeDescription = 'CakePHP: the rapid development php framework';
 
             <?php if ($this->Identity->isLoggedIn()): ?>
                 <ul id="user_menu">
-                <li><?php echo $user->username; ?></li>
-                <li><?php echo $this->Html->link('Profil editieren', url: ['controller' => 'Users', 'action' => 'edit']); ?></li>
-                <li><?php echo $this->Html->link('Logout', url: ['controller' => 'Users', 'action' => 'logout']); ?></li>
+                    <li><?php echo $user->username; ?></li>
+                    <li><?php echo $this->Html->link('Profil editieren', url: ['controller' => 'Users', 'action' => 'edit']); ?></li>
+                    <li><?php echo $this->Html->link('Logout', url: ['controller' => 'Users', 'action' => 'logout']); ?></li>
+                    <li><?= $this->Html->link(
+                    $this->Avatar->display($user),
+                    ['controller' => 'Users', 'action' => 'edit', $user->id],
+                    ['escape' => false]) ?>
+                    </li>
                 </ul>
                 
             <?php endif; ?>    
@@ -192,6 +197,41 @@ $cakeDescription = 'CakePHP: the rapid development php framework';
                     <img src="<?= $this->Url->build('img/icons/material_delete.svg') ?>" width="32" height="32" alt="Löschen" title="Löschen" onclick="initDelete('${id}')" class="deleteLink"/>
                 `;
             }
+            
+            document.addEventListener('DOMContentLoaded', function() {
+                const avatarInput = document.querySelector('#avatar');
+                const preview = document.querySelector('#avatar-preview');
+                const cropContainer = document.querySelector('#crop-container');
+                const cropData = document.querySelector('#avatar-crop');
+                
+                avatarInput.addEventListener('change', function(e) {
+                    if (e.target.files.length) {
+                        const reader = new FileReader();
+                        reader.onload = function(event) {
+                            // Cropper initialisieren
+                            const image = document.createElement('img');
+                            image.id = 'image-to-crop';
+                            image.src = event.target.result;
+                            
+                            cropContainer.innerHTML = '';
+                            cropContainer.appendChild(image);
+                            cropContainer.style.display = 'block';
+                            
+                            const cropper = new Cropper(image, {
+                                aspectRatio: 1,
+                                viewMode: 1,
+                                autoCropArea: 1,
+                                responsive: true,
+                                crop(event) {
+                                    cropData.value = JSON.stringify(event.detail);
+                                }
+                            });
+                        }
+                        reader.readAsDataURL(e.target.files[0]);
+                    }
+                });
+            });
         </script>
+        
 </body>
 </html>

@@ -182,7 +182,8 @@ unset($fullBaseUrl);
  */
 Cache::setConfig(Configure::consume('Cache'));
 ConnectionManager::setConfig(Configure::consume('Datasources'));
-ConnectionManager::alias($_SERVER['SERVER_NAME'], 'default');
+$aliasSource = $_SERVER['SERVER_NAME'] ?? 'default';
+ConnectionManager::alias($aliasSource, 'default');
 TransportFactory::setConfig(Configure::consume('EmailTransport'));
 Mailer::setConfig(Configure::consume('Email'));
 Log::setConfig(Configure::consume('Log'));

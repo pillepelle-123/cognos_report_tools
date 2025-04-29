@@ -57,6 +57,8 @@ class Application extends BaseApplication implements AuthenticationServiceProvid
         parent::bootstrap();
 
         $this->addPlugin('Authentication');
+        $this->addPlugin('Migrations');
+
 
         if (PHP_SAPI !== 'cli') {
             FactoryLocator::add(

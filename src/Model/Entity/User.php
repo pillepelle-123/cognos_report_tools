@@ -5,6 +5,7 @@ namespace App\Model\Entity;
 
 use Cake\ORM\Entity;
 use Authentication\PasswordHasher\DefaultPasswordHasher;
+use Authentication\IdentityInterface;
 
 
 /**
@@ -16,8 +17,28 @@ use Authentication\PasswordHasher\DefaultPasswordHasher;
  * @property \Cake\I18n\DateTime|null $created
  * @property \Cake\I18n\DateTime|null $modified
  */
-class User extends Entity
+class User extends Entity implements IdentityInterface
 {
+    /**
+     * Get the identifier for the user.
+     *
+     * @return array|int|string|null
+     */
+    public function getIdentifier(): array|int|string|null
+    {
+        return $this->id;
+    }
+
+    /**
+     * Get the original data for the user.
+     *
+     * @return array|\ArrayAccess
+     */
+    public function getOriginalData(): array|\ArrayAccess
+    {
+        return $this->toArray();
+    }
+
     /**
      * Fields that can be mass assigned using newEntity() or patchEntity().
      *
@@ -32,6 +53,8 @@ class User extends Entity
         'password' => true,
         'firstname' => true, // Neues Feld
         //'profile_photo' => true, // Neues Feld
+        'avatar' => true,
+        'avatar_crop' => true,
         'created' => true,
         'modified' => true,
     ];

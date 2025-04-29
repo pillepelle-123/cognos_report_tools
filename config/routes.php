@@ -49,6 +49,8 @@ return function (RouteBuilder $routes): void {
         $builder->connect('/users/edit', ['controller' => 'Users', 'action' => 'edit']);
 
 
+        $builder->connect('/test', array('controller' => 'Pages', 'action' => 'display', 'test'));
+
         /*$builder->connect('/query-expander/:report_id', 
         ['controller' => 'Apps', 'action' => 'queryExpander']
     )->setPass(['report_id']);*/

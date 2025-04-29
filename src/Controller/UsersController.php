@@ -26,6 +26,7 @@ class UsersController extends AppController
         parent::initialize();
         // füge add hinzu, wenn ein allererster User angelegt werden muss
         $this->Authentication->allowUnauthenticated(['login' /*, 'add'*/ ]); 
+        $this->loadComponent('ImageUpload');
     }
 
     /**
@@ -35,8 +36,7 @@ class UsersController extends AppController
      */
     public function index()
     {
-        $query = $this->Users->find();
-        $users = $this->paginate($query);
+
 
         $this->set(compact('users'));
     }
@@ -84,17 +84,60 @@ class UsersController extends AppController
      */
     public function edit()
     {   $user = $this->Users->get($this->Authentication->getIdentity()->get('id'));
+        
         if ($this->request->is(['patch', 'post', 'put'])) {
-            $user = $this->Users->patchEntity($user, $this->request->getData());
-            if ($this->Users->save($user)) {
-                $this->Flash->success(__('The user has been saved.'));
+            $data = $this->request->getData();
+            $component = $this->loadComponent('ImageUpload');
+            $v = $data['avatar']->getError() == 0;
 
+            if (!empty($data['avatar']) && $data['avatar']->getError() == 0) {
+                $filename = $this->ImageUpload->handleUpload($data['avatar'], $user->id);
+                $this->Flash->success(__(''));
+
+                if ($filename) {
+                    $data['avatar'] = $filename;
+                }
+
+            } 
+            else if (empty($user->avatar)) {
+
+                $this->ImageUpload->generateDefaultAvatar($user->username);
+            }
+
+            $user = $this->Users->patchEntity($user, $data);
+
+            if ($this->Users->save($user)) {
+                $this->Flash->success(__('Profil aktualisiert.'));
                 return $this->redirect(['action' => 'edit']);
             }
-            $this->Flash->error(__('The user could not be saved. Please, try again.'));
+            $this->Flash->error(__('Die Profilaktualisierung hat nicht geklappt. Versuche es noch einmal.'));
         }
         $this->set(compact('user'));
         $this->set('title', 'Profil bearbeiten');
+    }
+
+    private function processAvatar($filename, $cropData)
+    {
+        $path = WWW_ROOT . 'img' . DS . 'users' . DS;
+        $fullPath = $path . $filename;
+        
+        $crop = json_decode($cropData, true);
+        
+        $image = imagecreatefromstring(file_get_contents($fullPath));
+        $cropped = imagecrop($image, [
+            'x' => $crop['x'],
+            'y' => $crop['y'],
+            'width' => $crop['width'],
+            'height' => $crop['height']
+        ]);
+        
+        // Auf 1024x1024 skalieren
+        $final = imagescale($cropped, 1024, 1024);
+        imagepng($final, $fullPath);
+        
+        imagedestroy($image);
+        imagedestroy($cropped);
+        imagedestroy($final);
     }
 
     /**

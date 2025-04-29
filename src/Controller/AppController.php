@@ -46,9 +46,22 @@ class AppController extends Controller
 
         $this->loadComponent('Flash');
         $this->loadComponent('Authentication.Authentication');
+        // vorheriges Semikolon weg und dann folgendes anhängen an Authentication.Authentication
+        /*, [
+            'identityAttribute' => 'identity',
+            'identityCheck' => true,
+            'queryDatasource' => true,
+            'unauthenticatedRedirect' => '/users/login',
+            'requireIdentity' => true
+        ]);*/
         $this->viewBuilder()->setHelpers(['Authentication.Identity']); // wichtig für Views!
-
         $this->user = $this->request->getAttribute('identity');
+
+        // $query = $this->Users->find();
+        
+        // $user2 = $this->Authentication->getIdentity();
+
+
 
         // $identity = $this->request->getAttribute('identity');
         // $this->username = $identity ? $identity->get('username') : null; //$this->request->getSession()->read

@@ -205,6 +205,14 @@ button a:focus {
     display: block;
     padding: 0.5rem 0;
 }
+
+.avatar-circle {
+    border-radius: 50%;
+    background-size: cover;
+    background-position: center;
+    display: inline-block;
+    vertical-align: middle;
+}
 .breadcrumb {
     display: flex;
     justify-content: baseline;

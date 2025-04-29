@@ -7,10 +7,10 @@ Router::defaultRouteClass(DashedRoute::class);
 
 return function (RouteBuilder $routes): void {
     $routes->scope('/', function (RouteBuilder $builder): void {
-        $builder->connect('/queries', ['controller' => 'QueryExpander', 'action' => 'queries']);  // action umbenannt
-        $builder->connect('/settings', ['controller' => 'QueryExpander', 'action' => 'settings']);  // action umbenannt
-        $builder->connect('/result', ['controller' => 'QueryExpander', 'action' => 'result']);  // action umbenannt
-        $builder->connect('/download', ['controller' => 'QueryExpander', 'action' => 'resultDownload']);  // action umbenannt
+        $builder->connect('/queries', ['controller' => 'QueryExpander', 'action' => 'queries']);  
+        $builder->connect('/settings', ['controller' => 'QueryExpander', 'action' => 'settings']);
+        $builder->connect('/result', ['controller' => 'QueryExpander', 'action' => 'result']);
+        $builder->connect('/download', ['controller' => 'QueryExpander', 'action' => 'resultDownload']);
         $builder->fallbacks('DashedRoute');
     });
 }
