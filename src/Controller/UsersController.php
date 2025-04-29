@@ -83,8 +83,8 @@ class UsersController extends AppController
      * @throws \Cake\Datasource\Exception\RecordNotFoundException When record not found.
      */
     public function edit()
-    {   $user = $this->Users->get($this->Authentication->getIdentity()->get('id'));
-        
+    {   
+        $user = $this->Users->get($this->Authentication->getIdentity()->get('id'));
         if ($this->request->is(['patch', 'post', 'put'])) {
             $data = $this->request->getData();
             $component = $this->loadComponent('ImageUpload');

@@ -19,6 +19,8 @@ namespace App\Controller;
 use Cake\Controller\Controller;
 use Cake\Event\EventInterface;
 
+use function PHPUnit\Framework\isNull;
+
 /**
  * Application Controller
  *
@@ -31,6 +33,7 @@ class AppController extends Controller
 
 {
     protected $user;
+    protected $Users;
     /**
      * Initialization hook method.
      *
@@ -46,16 +49,16 @@ class AppController extends Controller
 
         $this->loadComponent('Flash');
         $this->loadComponent('Authentication.Authentication');
-        // vorheriges Semikolon weg und dann folgendes anhängen an Authentication.Authentication
-        /*, [
-            'identityAttribute' => 'identity',
-            'identityCheck' => true,
-            'queryDatasource' => true,
-            'unauthenticatedRedirect' => '/users/login',
-            'requireIdentity' => true
-        ]);*/
         $this->viewBuilder()->setHelpers(['Authentication.Identity']); // wichtig für Views!
-        $this->user = $this->request->getAttribute('identity');
+
+        //$acb = $this->Users->find(  'all');
+        $identity = $this->request->getAttribute('identity');
+        if(isset($identity)) {
+            $this->Users = $this->fetchTable('Users');
+            $this->user = $this->Users->get($identity->getIdentifier());
+        }
+
+
 
         // $query = $this->Users->find();
         

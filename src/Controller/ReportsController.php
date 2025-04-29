@@ -19,19 +19,13 @@ class ReportsController extends AppController
      */
     public function index()
     {
-        // $query = $this->Users->find();
-        // $users = $this->paginate($query);
-        // $user = $this->Users->get($this->user->id, contain: []);
-        //$user = $this->Users->get($this->Authentication->getIdentity());//->get('id'));
-
-        $user = $this->user;
         $reports = $this->Reports->find('all')
-            ->where(['username' => $user->username])
-
-              // Auth->user('username')
-            //Identity->get('username')
+            ->where(['username' => $this->user->username])
             ->order(['upload_timestamp' => 'DESC']);
-        $this->set(compact('user', 'reports'));
+
+        // Inhalte an Templates übergeben
+        //$this->set(compact('user', 'reports')); /alte Variante, klappt aber nicht direkt mit $this->user
+        $this->set(['user' => $this->user, 'reports' => $reports]);
         $this->set('title', 'Portal');
     }
 
@@ -64,7 +58,8 @@ class ReportsController extends AppController
                 $this->Flash->error('Fehler beim Speichern in der Datenbank.');
             }
         }
-        $this->set(compact('user'));
+        $this->set(['user' => $this->user]);
+        //$this->set(compact('user'));
         $this->set('title', 'Report hochladen');
     }
 
