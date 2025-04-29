@@ -37,26 +37,6 @@ $cakeDescription = 'CakePHP: the rapid development php framework';
     <?= $this->fetch('css') ?>
     <?= $this->fetch('script') ?>
     
-    <style>
-        #user_menu {
-            list-style-type: none;
-            margin: 0;
-            padding: 0;
-        }
-        #user_menu li {
-            display: inline;
-            margin-right: 4px;
-        }
-        .delete-container {
-            display: inline-block;
-        }
-        .delete-btn {
-            margin-left: 5px;
-        }
-        .delete-wrapper button {
-            margin-right: 5px;
-        }
-        </style>
 
 </head>
 <body>
@@ -169,8 +149,8 @@ $cakeDescription = 'CakePHP: the rapid development php framework';
         <script>
             function initDelete(id) {
                 const wrapper = document.getElementById(`delete-wrapper-${id}`);
-                
-                wrapper.innerHTML = `<p>
+                /* ##### Alter block
+                 `<p>
                     <span class="text-danger me-2">Möchtest du wirklich löschen?</span><br>
                     <button onclick="confirmDelete('${id}')" 
                             class="btn btn-danger btn-sm">
@@ -181,23 +161,35 @@ $cakeDescription = 'CakePHP: the rapid development php framework';
                         Abbrechen
                     </button>
                     </p>
+                ` */ 
+                wrapper.innerHTML = `
+                    <!--<div style="display: inline-block; border: 1px solid #292929; border-radius: 5px; padding: 2px;">-->
+                    <div class="button-delete-cancel" onclick="cancelDelete('${id}')">
+                    <img src="/img/icons/material_cancel_ffffff.svg" alt="Löschen abbrechen" title="Löschen abbrechen" onclick="cancelDelete('${id}')"> <br>
+                    </div>
+                    <div class="button-delete-confirm" onclick="confirmDelete('${id}')">
+                    <img src="/img/icons/material_delete_ffffff.svg" alt="Löschen bestätigen" title="Löschen bestätigen" onclick="confirmDelete('${id}')"> <br>
+                    </div>
+                    <!--</div>-->
+
+                    
                 `;
+
             }
 
             function confirmDelete(id) { 
                 document.getElementById('deleteId').value = id;
-                console.log('deleteId', id);
                 document.getElementById('deleteForm').submit();
-                console.log('deleteForm', document.getElementById('deleteForm'));    
             }
 
             function cancelDelete(id) {
                 const wrapper = document.getElementById(`delete-wrapper-${id}`);
                 wrapper.innerHTML = `
-                    <img src="<?= $this->Url->build('img/icons/material_delete.svg') ?>" width="32" height="32" alt="Löschen" title="Löschen" onclick="initDelete('${id}')" class="deleteLink"/>
+                    <img src="<?= $this->Url->build('img/icons/material_delete_292929.svg') ?>" width="32" height="32" alt="Löschen" title="Löschen" onclick="initDelete('${id}')" class="deleteLink"/>
                 `;
             }
             
+            // Crop Images
             document.addEventListener('DOMContentLoaded', function() {
                 const avatarInput = document.querySelector('#avatar');
                 const preview = document.querySelector('#avatar-preview');

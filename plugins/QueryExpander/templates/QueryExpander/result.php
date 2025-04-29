@@ -5,7 +5,7 @@ $report = $this->request->getSession()->read('QueryExpander.report');
 ?>
 
 <div class="query-expander result">
-    <h2><?= $this->get('title') ?></h2>
+    <h1><?= $this->get('title') ?></h1>
     <div>  
 
         <?= $this->Form->create(null, [

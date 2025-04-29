@@ -1,4 +1,4 @@
-<h2><?= $this->get('title') ?></h2>
+<h1><?= $this->get('title') ?></h1>
 <div class="users form">
 <?= $this->Form->create($user) ?>
     <fieldset>

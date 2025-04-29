@@ -6,10 +6,10 @@
  */
 use Cake\Core\Configure;
 
-$this->layout = 'error';
+$this->setLayout('error');
 
 if (Configure::read('debug')) :
-    $this->layout = 'dev_error';
+    $this->setLayout('dev_error');
 
     $this->assign('title', $message);
     $this->assign('templateName', 'error400.php');
@@ -19,7 +19,7 @@ if (Configure::read('debug')) :
     $this->end();
 endif;
 ?>
-<h2><?= h($message) ?></h2>
+<h1><?= h($message) ?></h1>
 <p class="error">
     <strong><?= __d('cake', 'Error') ?>: </strong>
     <?= __d('cake', 'The requested address {0} was not found on this server.', "<strong>'{$url}'</strong>") ?>

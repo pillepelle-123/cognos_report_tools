@@ -1,5 +1,5 @@
 <div class="reports upload">
-    <h2><?= $this->get('title') ?></h2>
+    <h1><?= $this->get('title') ?></h1>
     
     <?= $this->Form->create(null, ['type' => 'file']) ?>
     <?= $this->Form->file('report_file', ['required' => true], array('id' => 'chose_file')) ?>

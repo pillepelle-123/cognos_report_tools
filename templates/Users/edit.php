@@ -1,4 +1,4 @@
-<h2><?= $this->get('title') ?></h2>
+<h1><?= $this->get('title') ?></h1>
 
 <?= $this->Form->create($user, ['action' => 'edit', 'type' => 'post']) ?>
     <fieldset>

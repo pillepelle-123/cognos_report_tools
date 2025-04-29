@@ -3,7 +3,7 @@ $report = $this->request->getSession()->read('QueryExpander.report');
 
 ?>
 <div class="query-expander data-items">
-    <h2><?= $this->get('title') ?></h2>
+    <h1><?= $this->get('title') ?></h1>
     <p>für Query: <code><?= h($selectedQuery['name']) ?></code></p>
     
     <?= $this->Form->create(null, [
@@ -22,10 +22,14 @@ $report = $this->request->getSession()->read('QueryExpander.report');
             <?php foreach ($dataItems as $item => $value) : ?>
             <tr>
                 <td>
+                    <div class="form-check">
                     <?= $this->Form->checkbox('selected_items[]', [
                         'value' => $item,
+                        'class' => 'form-check-input',
+                        'type' => 'checkbox',
                         'hiddenField' => false
                     ]) ?>
+                    </div>  
                 </td>
                 <td><?= h($item) ?></td>
                 <td><code><?= h($value['expression']) ?></code></td>

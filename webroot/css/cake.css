@@ -23,7 +23,7 @@
     --color-crt-blau-stufe-12: #002a3c;
 
     /* CRT Colors grau */
-    --color-crt-grau-stufe-1: #efefef;
+    --color-crt-grau-stufe-1: #f5f5f5;
     --color-crt-grau-stufe-2: #d9d9d9;
     --color-crt-grau-stufe-3: #b2b2b2;
     --color-crt-grau-stufe-4: #8c8c8c;
@@ -88,7 +88,7 @@
 body {
     font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
     font-weight: 400;
-    background: var(--color-crt-blau-stufe-1);
+    background: var(--color-crt-grau-stufe-1);
     color: var(--color-crt-grau-stufe-7);
 }
 
@@ -111,16 +111,47 @@ h3 {
     font-size: 2.4rem;
 }
 
+
+
+/* Tabellen */
+td, th {
+    border: none;
+    /* border-bottom: 0.1rem solid var(--color-cakephp-blue); */
+    padding: 1.2rem 0.3rem;
+}
+
+th {
+    border-bottom: 0.4rem solid var(--color-crt-blau-stufe-4);
+}
+
+tr:nth-child(even) {
+    background-color: var(--color-white);
+ }
+ 
+/* Links and Buttons */
+
 a {
     color: var(--color-links);
-    transition: color 0.2s linear;
 }
 
 a:hover,
 a:focus,
 a:active {
     color: var(--color-links-active);
-    transition: color 0.2s ease-out;
+}
+
+button a:hover,
+button a:focus {
+    color: var(--color-white);
+}
+
+.action-button-img {
+    cursor: pointer;
+}
+
+.action-button-img:hover {
+    transform: scale(1.2);
+    transition: transform .2s linear;
 }
 
 .button:focus,.button:hover,button:focus,button:hover,input[type='button']:focus,input[type='button']:hover,input[type='reset']:focus,input[type='reset']:hover,input[type='submit']:focus,input[type='submit']:hover{
@@ -129,6 +160,36 @@ a:active {
     color: var(--color-white);
     transition: background .4s,color .4s;
 }
+
+.button-delete-cancel,
+.button-delete-confirm {
+    display: inline-block;
+    height: 32px;
+    width: 32px;
+    border-radius: .4rem;
+}
+
+.button-delete-cancel {
+    background-color: var(--color-crt-blau-stufe-4);
+    transition: background .4s,color .4s;
+}
+
+.button-delete-cancel:hover {
+    background-color: var(--color-crt-blau-stufe-12);
+    transition: background .4s,color .4s;
+}
+
+.button-delete-confirm {
+    background-color: var(--color-crt-rot-stufe-7);
+    transition: background .4s,color .4s;
+}
+
+.button-delete-confirm:hover {
+    background-color: var(--color-crt-rot-stufe-8);
+    transition: background .4s,color .4s;
+}
+
+
 
 input::file-selector-button {
     background-color: var(--color-crt-blau-stufe-4);
@@ -159,12 +220,18 @@ input::file-selector-button {
     transition: background .4s,color .4s;
   }
 
-
-button a:hover,
-button a:focus {
-    color: var(--color-white);
+pre {
+    width: 100%;
+    background: var(--color-white);
+    padding: 1rem;
+    border-radius: 0.4rem;
+    overflow-x: auto;
+    font-size: 1.4rem;
+    line-height: 2.0rem;
+    line-break: anywhere;
+    word-break: break-all; 
+    white-space:pre-wrap
 }
-
 
 /* Nav bar */
 .top-nav-container {
@@ -249,6 +316,7 @@ th a,
 .side-nav a,
 .top-nav-links a:hover {
     color: var(--color-crt-blau-stufe-4);
+    transition: .2s linear;
 }
 
 
@@ -256,13 +324,12 @@ th a,
 .table-responsive {
     display: block;
     width: 100%;
-    overflow-x: auto;
-    -webkit-overflow-scrolling: touch;
+    background-color: var(--color-message-error-text);
 }
 
 /* Main */
 .container {
-    /* Seiteninhalt */
+    padding-bottom: 40px;
 }
 
 .content {
@@ -279,7 +346,26 @@ th a,
 
 /* Seitenspezifisch */
 
-.index_row_actions {
+#user_menu {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+}
+#user_menu li {
+    display: inline;
+    margin-right: 4px;
+}
+.delete-container {
+    display: inline-block;
+}
+.delete-btn {
+    margin-left: 5px;
+}
+.delete-wrapper button {
+    margin-right: 5px;
+}
+
+.index-column-actions {
     text-align: right;
 }
 
@@ -301,6 +387,12 @@ th a,
     background-color: var(--color-crt-rot-stufe-8);
     border: none;
     color: var(--color-white);
+}
+
+.edit-textarea {
+    height: 70rem;
+    width: 100%;
+    resize: none;
 }
 /*.actions a:first-child {
     padding-left: 0;
