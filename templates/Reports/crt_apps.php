@@ -17,16 +17,3 @@
     </div>
 </div>
 
-<style>
-.app-list {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 20px;
-}
-.app-card {
-    border: 1px solid #ddd;
-    padding: 20px;
-    border-radius: 5px;
-    width: 300px;
-}
-</style>

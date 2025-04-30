@@ -43,7 +43,8 @@ $cakeDescription = 'CakePHP: the rapid development php framework';
     <div class="top-nav-container">
     <nav class="top-nav">
         <div class="top-nav-title">
-            <a href="<?= $this->Url->build('/') ?>"><span>C</span>ongos <span>R</span>eport <span>T</span>ools  </a>
+            <?= $this->Html->image('crt_logo_50x60.png', array('title' => 'Congos Report Tools', 'url' => '/')) ?>
+            <!-- <a href="<? /*= $this->Url->build('/') */?>"><span>C</span>ongos <span>R</span>eport <span>T</span>ools</a> -->
         </div>
         <div class="top-nav-links">
   
@@ -51,7 +52,6 @@ $cakeDescription = 'CakePHP: the rapid development php framework';
             <?php if ($this->Identity->isLoggedIn()): ?>
                 <ul id="user_menu">
                     <li><?php echo $user->username; ?></li>
-                    <li><?php echo $this->Html->link('Profil editieren', url: ['controller' => 'Users', 'action' => 'edit']); ?></li>
                     <li><?php echo $this->Html->link('Logout', url: ['controller' => 'Users', 'action' => 'logout']); ?></li>
                     <li><?= $this->Html->link(
                     $this->Avatar->display($user),

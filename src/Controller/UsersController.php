@@ -92,7 +92,7 @@ class UsersController extends AppController
 
             if (!empty($data['avatar']) && $data['avatar']->getError() == 0) {
                 $filename = $this->ImageUpload->handleUpload($data['avatar'], $user->id);
-                $this->Flash->success(__(''));
+                $this->Flash->success(__('Das Profilfoto wurde hochgeladen.'));
 
                 if ($filename) {
                     $data['avatar'] = $filename;

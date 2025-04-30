@@ -23,7 +23,7 @@
 						<!-- Bearbeiten -->
 						<?= $this->Html->image('icons/material_edit_292929.svg', array('title' => 'Bearbeiten', 'height' => '32', 'width' => '32', 'class' => 'action-button-img', 'url' => ['action' => 'edit', '?' => ['report_id' => $report->id]])) ?>			
 						<!-- In App bearbeiten -->
-						<?= $this->Html->image('icons/crt_logo_32_32.png', array('title' => 'In CRT App bearbeiten', 'height' => '32', 'width' => '32', 'class' => 'action-button-img', 'url' => ['action' => 'crtApps', '?' => ['report_id' => $report->id]])) ?>
+						<?= $this->Html->image('icons/crt_icon.svg', array('title' => 'In CRT App bearbeiten', 'height' => '32', 'width' => '32', 'class' => 'action-button-img', 'url' => ['action' => 'crtApps', '?' => ['report_id' => $report->id]])) ?>
 						
 						<!-- Löschen -->
 						<form style="display: inline;" id="deleteForm" method="post" action="<?= $this->Url->build(['action' => 'delete', '?' => ['report_id' => $report->id]]) ?>" onsubmit="return confirmDelete(<?= $report->id ?>);">
